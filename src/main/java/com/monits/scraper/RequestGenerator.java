@@ -1,63 +1,48 @@
+
 package com.monits.scraper;
+/**
+ * 
+ *
+ * Get type of elements necesaries to generate a request.
+ * 
+ * @author ndebernardi <ndebernardia@monits.com>
+ * @copyright 2011 Monits
+ * @license Copyright (C) 2011. All rights reserved
+ * @version Release: 1.0.0
+ * @link http://www.monits.com/
+ * @since 1.0.0
+ */
+ 
+ 
+public interface RequestGenerator {
+/**
+ * @Obtain the verb from the request 
+ * @return  String
+ */
+	public String getVerb();
 
-public class RequestGenerator {
-	
-	
-	
-	private String verb;
-	
-	private String url;
-	private String userAgent;
-	private String session;
-	private String cookie;
-	
-	public RequestGenerator() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	
-	public String getVerb() {
-		return verb;
-	}
+	/**
+	 * @Obtain the url from the request 
+	 * @return String
+	 */
+	public String getUrl();
 
-	public void setVerb(String verb) {
-		this.verb = verb;
-	}
+	/**
+	 * @Obtain the userAgent from the request
+	 * @return String
+	 */
+	public String getUserAgent();
 
-	public String getUrl() {
-		return url;
-	}
+	/**
+	 * @Obtain the session from the request
+	 * @return String
+	 */
+	public String getSession();
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getUserAgent() {
-		return userAgent;
-	}
-
-	public void setUserAgent(String userAgent) {
-		this.userAgent = userAgent;
-	}
-
-	public String getSession() {
-		return session;
-	}
-
-	public void setSession(String session) {
-		this.session = session;
-	}
-
-	public String getCookie() {
-		return cookie;
-	}
-
-	public void setCookie(String cookie) {
-		this.cookie = cookie;
-	}
-
-	
-	
-	
+	/**
+	 * @Obtain the cookie from the request
+	 * @return String
+	 */
+	public String getCookie();
 
 }
