@@ -9,6 +9,9 @@
  */
 package com.monits.scraper.service;
 
+import com.monits.scraper.RequestGenerator;
+import com.monits.scraper.transformation.Transformation;
+
 /**
  * Scraping Service
  *
@@ -19,14 +22,17 @@ package com.monits.scraper.service;
  * @link http://www.monits.com/
  * @since 1.0.0
  */
-public interface ScrapingService{
+public interface ScrapingService {
 
 	/**
-	 * This method resolves a HTTP request and gets the String of the HTML Code
+	 * This method resolves a HTTP request and obtains the String of the HTML Code,
+	 * that will be shown in a determinated output.
 	 *
-	 * @param req String with the complete HTTP Request
+	 * @param rGen Object to manage HTTP Requests.
+	 * @param transform Defines the output in order to show the scrap done.
+	 *
 	 * @return Returns a String with the Scraped HTML
 	 */
-	public abstract String scrap(String req);
+	public String scrap(RequestGenerator rGen, Transformation transform);
 
 }
