@@ -1,6 +1,10 @@
 package com.monits.scraper.service;
 
-import org.apache.commons.httpclient.params.HttpClientParams;
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
+import org.apache.http.util.EntityUtils;
 
 import com.monits.scraper.RequestGenerator;
 import com.monits.scraper.transformation.Transformation;
@@ -8,13 +12,27 @@ import com.monits.scraper.transformation.Transformation;
 public class ScrapingServiceImpl implements ScrapingService {
 
 	@Override
-	public String scrap(RequestGenerator req, Transformation transform) {
-		this.generateRequest(req);
+	public String scrap (RequestGenerator rGen, Transformation transform) {
 
-		return null;
+		HttpResponse response = performRequest(rGen);
+		String data = null;
+
+		try {
+			data = EntityUtils.toString(response.getEntity());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// TODO : Sanitize HTML
+
+		return transform.transform(data);
 	}
 
-	private HttpClientParams generateRequest(RequestGenerator req){
+	private HttpResponse performRequest(RequestGenerator req){
 
 		return null;
 	}
