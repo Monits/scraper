@@ -31,7 +31,9 @@ public interface Transformation {
 	 * @param xhtml The xhtml to transform.
 	 * 
 	 * @return The transformed xhtml.
+	 * 
+	 * @throws Exception 
 	 */
-	public String transform(String xhtml);
+	public String transform(String xhtml) throws Exception;
 	
 }
