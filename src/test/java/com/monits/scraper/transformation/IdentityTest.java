@@ -47,8 +47,9 @@ public class IdentityTest {
 	 * Test method for Identity.transform(String xhtml).
 	 */
 	@Test
-	public void testTransformEmpty() {
+	public void testTransform() {
 		
+		//Everything here should work perfectly.
 		//Initializing Identity class object.
 		Identity id = new Identity();
 		
@@ -62,6 +63,10 @@ public class IdentityTest {
 		this.actualString = id.transform(expectedString);
 		Assert.assertEquals("Empty string expected.", expectedString, actualString);
 		
+		//Check null.
+		this.expectedString = null;
+		this.actualString = id.transform(expectedString);
+		Assert.assertEquals("Null string expected.", expectedString, actualString);
 	}
 	
 }
