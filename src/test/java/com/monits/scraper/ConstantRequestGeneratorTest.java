@@ -54,24 +54,30 @@ public class ConstantRequestGeneratorTest {
 	@Test
 	public void testConstantRequestGenerator() {
 		
-		//Testing setters, this should work
+		/**
+		 * Testing setters, this should work 
+		 */
 		this.crg.setUrl("http://www.google.com");
-		this.crg.setCookie("user = 12nedb");
-		this.crg.setSession("userId= 990Auj");
+		this.crg.setCookie("username=J23Esta expires=Tuesday,November18,2011,10:23:05am path=/tutorials/ domain=LocalHost ");
+		//this.crg.setSession("userId= 990Auj");
 		this.crg.setUserAgent("Mozilla Firefox 3.2.1.2.3");
 		this.crg.setVerb("GET");
 		
-		//Testing getters, this should work
+		/**
+		 * Testing getters, this should work
+		 */
 		this.url = crg.getUrl();
 		this.cookie = crg.getCookie();
-		this.session= crg.getSession();
+		//this.session= crg.getSession();
 		this.userAgent= crg.getUserAgent();
 		this.verb = crg.getVerb();
 		
-		//Asserts for every case.
+		/**
+		 * Asserts for every case.
+		 */
 		Assert.assertEquals("URL get and set doesn't work", "http://www.google.com", url);
-		Assert.assertEquals("Cookie get and set doesn't work", "user = 12nedb", cookie);
-		Assert.assertEquals("Session get and set doesn't work", "userId= 990Auj", session);
+		Assert.assertEquals("Cookie get and set doesn't work", "username=J23Esta expires=Tuesday,November18,2011,10:23:05am path=/tutorials/ domain=LocalHost ", cookie);
+		//Assert.assertEquals("Session get and set doesn't work", "userId= 990Auj", session);
 		Assert.assertEquals("userAgent get and set doesn't work", "Mozilla Firefox 3.2.1.2.3", userAgent);
 		Assert.assertEquals("Verb get and set doesn't work", "GET", verb);
 	}

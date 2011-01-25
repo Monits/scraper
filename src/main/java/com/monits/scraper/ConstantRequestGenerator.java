@@ -80,21 +80,24 @@ public class ConstantRequestGenerator implements RequestGenerator {
 		this.userAgent = userAgent;
 	}
 
+	
+	
 	/* (non-Javadoc)
 	 * @see com.monits.scraper.RequestGenerator#getSession()
 	 * @return session object
 	 */
-	@Override
-	public String getSession() {
-		return session;
-	}
+	
+	//@Override
+	//public String getSession() {
+	//	return session;
+	//}
 /**
  * 
  * @param session
  */
-	public void setSession(String session) {
-		this.session = session;
-	}
+	//public void setSession(String session) {
+	//	this.session = session;
+	//}
 
 	/* (non-Javadoc)
 	 * @see com.monits.scraper.RequestGenerator#getCookie()

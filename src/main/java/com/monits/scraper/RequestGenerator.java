@@ -37,7 +37,7 @@ public interface RequestGenerator {
 	 * @Obtain the session from the request
 	 * @return String
 	 */
-	public String getSession();
+	//public String getSession();
 
 	/**
 	 * @Obtain the cookie from the request
