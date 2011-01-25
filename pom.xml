@@ -7,8 +7,35 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>scraper</name>
+  <name>monits-scraper</name>
   <url>http://maven.apache.org</url>
+  
+  <description>A generic scraper for Monits' projects</description>
+
+  <organization>
+    <name>Monits S.A.</name>
+    <url>http://monits.com/</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>Copyright of Monits S.A.</name>
+      <comments>Usage of this library is strictly forbidden without written notice from Monits S.A.</comments>
+    </license>
+  </licenses>
+
+  <scm>
+    <developerConnection>scm:svn:http://svn.monits.com/scraper/trunk</developerConnection>
+    <url>http://svn.monits.com/scraper/trunk</url>
+  </scm>
+  <issueManagement>
+    <system>Mantis BugTracker</system>
+    <url>http://mantis.monits.com/</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Hudson</system>
+    <url>http://hudson.monits.com/hudson</url>
+  </ciManagement>
 
   <distributionManagement>
     <repository>
