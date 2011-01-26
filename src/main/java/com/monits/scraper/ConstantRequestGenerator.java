@@ -1,6 +1,5 @@
 package com.monits.scraper;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

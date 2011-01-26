@@ -12,12 +12,15 @@ package com.monits.scraper.transformation;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -40,7 +43,7 @@ public class XSLTTransformation implements Transformation {
 	protected Transformer xslt;
 	
 	@Override
-	public String transform(String xhtml) throws Exception {
+	public String transform(String xhtml) throws RuntimeException {
 		
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(DEFAULT_INITIAL_BUFFER_SIZE);
 		Result result = new StreamResult(outputStream);
@@ -49,15 +52,15 @@ public class XSLTTransformation implements Transformation {
 		
 		try {
 			xslt.transform(source, result);
-		} catch (Exception e) { 
-			throw new Exception(e);
+		} catch (TransformerException e) { 
+			throw new RuntimeException(e);
 		}
 		
 		String output;
 		try {
 			output = outputStream.toString("UTF8");
-		} catch (Exception e) {
-			throw new Exception(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
 		}
 		
 		return output;
@@ -70,37 +73,37 @@ public class XSLTTransformation implements Transformation {
 	 * 
 	 * @return The source created.
 	 * 
-	 * @throws
+	 * @throws RuntimeException
 	 */
-	private Source getSource(String xhtml) throws Exception {
+	private Source getSource(String xhtml) throws RuntimeException {
 		DocumentBuilderFactory docBuildFactory = DocumentBuilderFactory.newInstance();
 		docBuildFactory.setValidating(false);
 		docBuildFactory.setExpandEntityReferences(false);
 		try {
 			docBuildFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-		} catch (Exception e) {
-			throw new Exception(e);
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
 		}
 		
 		DocumentBuilder docBuilder;
 		try {
 			docBuilder = docBuildFactory.newDocumentBuilder();
-		} catch (Exception e) {
-			throw new Exception(e);
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
 		}
 		
 		InputStream stream;
 		try {
 			stream = new ByteArrayInputStream(xhtml.getBytes("UTF-8"));
-		} catch (Exception e) {
-			throw new Exception(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
 		}
 		
 		Document document;
 		try {
 			document = docBuilder.parse(stream);
 		} catch (Exception e) {
-			throw new Exception(e);
+			throw new RuntimeException(e);
 		}
 		
 		return new DOMSource(document);
