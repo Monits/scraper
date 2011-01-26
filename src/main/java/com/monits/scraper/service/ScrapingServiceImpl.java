@@ -5,7 +5,10 @@ import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -55,6 +58,15 @@ public class ScrapingServiceImpl implements ScrapingService {
 		switch (requestParams.getVerb()) {
 		case GET:
 			request = new HttpGet(requestParams.getUrl());
+			break;
+		case POST:
+			request = new HttpPost(requestParams.getUrl());
+			break;
+		case DELETE:
+			request = new HttpDelete(requestParams.getUrl());
+			break;
+		case PUT:
+			request = new HttpPut(requestParams.getUrl());
 			break;
 
 		}
