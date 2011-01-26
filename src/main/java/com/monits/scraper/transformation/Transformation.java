@@ -34,6 +34,6 @@ public interface Transformation {
 	 * 
 	 * @throws Exception 
 	 */
-	public String transform(String xhtml) throws RuntimeException;
+	public String transform(String xhtml) throws Exception;
 	
 }

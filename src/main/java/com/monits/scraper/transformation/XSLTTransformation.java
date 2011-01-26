@@ -43,7 +43,7 @@ public class XSLTTransformation implements Transformation {
 	protected Transformer xslt;
 	
 	@Override
-	public String transform(String xhtml) throws RuntimeException {
+	public String transform(String xhtml) throws Exception {
 		
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(DEFAULT_INITIAL_BUFFER_SIZE);
 		Result result = new StreamResult(outputStream);
@@ -75,7 +75,7 @@ public class XSLTTransformation implements Transformation {
 	 * 
 	 * @throws RuntimeException
 	 */
-	private Source getSource(String xhtml) throws RuntimeException {
+	private Source getSource(String xhtml) throws Exception {
 		DocumentBuilderFactory docBuildFactory = DocumentBuilderFactory.newInstance();
 		docBuildFactory.setValidating(false);
 		docBuildFactory.setExpandEntityReferences(false);
