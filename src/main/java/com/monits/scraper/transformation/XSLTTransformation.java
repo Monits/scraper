@@ -11,18 +11,23 @@ package com.monits.scraper.transformation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.w3c.dom.Document;
 
@@ -41,6 +46,17 @@ public class XSLTTransformation implements Transformation {
 	private static final int DEFAULT_INITIAL_BUFFER_SIZE = 10000;
 	
 	protected Transformer xslt;
+	
+	public XSLTTransformation(String xslt) throws Exception {
+		
+		URI xsltUri = new URI(xslt);
+		InputStream stream = new FileInputStream(new File(xsltUri));
+		
+		Source xsltSource = new StreamSource(stream);
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		this.xslt = transformerFactory.newTransformer(xsltSource);
+		
+	}
 	
 	@Override
 	public String transform(String xhtml) throws Exception {
