@@ -1,6 +1,5 @@
 package com.monits.scraper.service;
 
-
 import java.util.Iterator;
 import java.util.Map;
 
@@ -19,8 +18,8 @@ import com.monits.scraper.transformation.Transformation;
 public class ScrapingServiceImpl implements ScrapingService {
 
 	@Override
-	public String scrap (RequestGenerator rGen,
-							Transformation transform) throws Exception {
+	public String scrap (RequestGenerator rGen,	Transformation transform)
+		   throws ScrapServiceException {
 
 		HttpResponse response;
 		String data = null;
@@ -31,8 +30,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 			data = transform.transform(data);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-				throw new Exception("ScrapingService Exception");
+			throw new ScrapServiceException(e.getMessage());
 		}
 
 		/* TODO : Sanitize HTML */
@@ -41,7 +39,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 	}
 
 	/**
-	 * Using a RequestGenerator, generate the http request, performs it 
+	 * Using a RequestGenerator, generate the http request, performs it
 	 * and returns it's response.
 	 * This throws a Exception when client.execute returns a Exception
 	 * @param Requestgenerator
@@ -50,42 +48,42 @@ public class ScrapingServiceImpl implements ScrapingService {
 	 */
 	private HttpResponse performRequest(RequestGenerator requestParams)
 			throws Exception {
-		
+
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpUriRequest request = null;
-		
+
 		switch (requestParams.getVerb()) {
-		case GET:         
+		case GET:
 			request = new HttpGet(requestParams.getUrl());
 			break;
-			
+
 		}
-		
+
 		CookieStore cookieStore = new BasicCookieStore();
-		
+
 		client.setCookieStore(cookieStore);
-		
+
 		if (requestParams.getCookie() != null) {
-			
+
 			Map<String,String> cookieMap = requestParams.getCookie();
-		
+
 			Iterator<Map.Entry<String, String>> cookieIterator = cookieMap.entrySet().iterator();
-			
+
 			while (cookieIterator.hasNext()) {
 				Map.Entry<String, String> e = cookieIterator.next();
-				
+
 				cookieStore.addCookie(new BasicClientCookie(e.getKey(), e.getValue()));
-				
+
 			}
 		}
-		
+
 		if (requestParams.getUserAgent() != null) {
-			
-			request.setHeader("User-Agent",requestParams.getUserAgent());	
+
+			request.setHeader("User-Agent",requestParams.getUserAgent());
 		}
-		
+
 		return client.execute(request);
-		
+
 	}
-		
+
 }
