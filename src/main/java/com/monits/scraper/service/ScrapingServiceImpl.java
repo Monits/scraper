@@ -41,56 +41,51 @@ public class ScrapingServiceImpl implements ScrapingService {
 	}
 
 	/**
-	 * Using a RequestGenerator, generate the request, performs it and returns it's response
+	 * Using a RequestGenerator, generate the http request, performs it 
+	 * and returns it's response.
+	 * This throws a Exception when client.execute returns a Exception
 	 * @param Requestgenerator
 	 * @return HttpResponse
+	 * @throws Exception
 	 */
-	private HttpResponse performRequest(RequestGenerator requestParams) {
-
-
+	private HttpResponse performRequest(RequestGenerator requestParams)
+			throws Exception {
+		
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpUriRequest request = null;
-
-		switch (requestParams.getVerb()){
-		case GET:
+		
+		switch (requestParams.getVerb()) {
+		case GET:         
 			request = new HttpGet(requestParams.getUrl());
 			break;
-
+			
 		}
-
+		
 		CookieStore cookieStore = new BasicCookieStore();
-
+		
 		client.setCookieStore(cookieStore);
-
+		
 		if (requestParams.getCookie() != null) {
-
-			Map<String,String> cookieMap = null;
-
-			Iterator cookieIterator = cookieMap.entrySet().iterator();
-
+			
+			Map<String,String> cookieMap = requestParams.getCookie();
+		
+			Iterator<Map.Entry<String, String>> cookieIterator = cookieMap.entrySet().iterator();
+			
 			while (cookieIterator.hasNext()) {
-				Map.Entry e = (Map.Entry)cookieIterator.next();
-
-				cookieStore.addCookie(new BasicClientCookie(e.getKey().toString(), e.getValue().toString()));
-
+				Map.Entry<String, String> e = cookieIterator.next();
+				
+				cookieStore.addCookie(new BasicClientCookie(e.getKey(), e.getValue()));
+				
 			}
 		}
-
+		
 		if (requestParams.getUserAgent() != null) {
-
-			request.setHeader("User-Agent",requestParams.getUserAgent());
+			
+			request.setHeader("User-Agent",requestParams.getUserAgent());	
 		}
-
-		HttpResponse requestResponse = null;
-
-		try {
-			requestResponse = client.execute(request);
-		} catch (Exception e) {
-
-		}
-
-		return requestResponse;
-
+		
+		return client.execute(request);
+		
 	}
-
+		
 }
