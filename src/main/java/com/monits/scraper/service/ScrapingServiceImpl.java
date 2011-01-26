@@ -1,13 +1,10 @@
 package com.monits.scraper.service;
 
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -22,25 +19,23 @@ import com.monits.scraper.transformation.Transformation;
 public class ScrapingServiceImpl implements ScrapingService {
 
 	@Override
-	public String scrap (RequestGenerator rGen, Transformation transform) {
+	public String scrap (RequestGenerator rGen,
+							Transformation transform) throws Exception {
 
-		HttpResponse response = performRequest(rGen);
+		HttpResponse response;
 		String data = null;
 
 		try {
+			response = performRequest(rGen);
 			data = EntityUtils.toString(response.getEntity());
 			data = transform.transform(data);
-		} catch (ParseException e) {
-			// TODO Hande ParseException
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Handle IOException
-			e.printStackTrace();
+
 		} catch (Exception e) {
-			// TODO Exception
+			e.printStackTrace();
+				throw new Exception("ScrapingService Exception");
 		}
 
-		// TODO : Sanitize HTML
+		/* TODO : Sanitize HTML */
 
 		return data;
 	}
@@ -51,55 +46,51 @@ public class ScrapingServiceImpl implements ScrapingService {
 	 * @return HttpResponse
 	 */
 	private HttpResponse performRequest(RequestGenerator requestParams) {
-		
-		
+
+
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpUriRequest request = null;
-		
+
 		switch (requestParams.getVerb()){
-		case GET:         
+		case GET:
 			request = new HttpGet(requestParams.getUrl());
 			break;
-			
+
 		}
-		
+
 		CookieStore cookieStore = new BasicCookieStore();
-		
+
 		client.setCookieStore(cookieStore);
-		
-		if (requestParams.getCookie() != null){
-			
+
+		if (requestParams.getCookie() != null) {
+
 			Map<String,String> cookieMap = null;
-		
+
 			Iterator cookieIterator = cookieMap.entrySet().iterator();
-			
+
 			while (cookieIterator.hasNext()) {
 				Map.Entry e = (Map.Entry)cookieIterator.next();
-				
+
 				cookieStore.addCookie(new BasicClientCookie(e.getKey().toString(), e.getValue().toString()));
-				
+
 			}
 		}
-		
-		if (requestParams.getUserAgent() != null){
-			
-			request.setHeader("User-Agent",requestParams.getUserAgent());	
+
+		if (requestParams.getUserAgent() != null) {
+
+			request.setHeader("User-Agent",requestParams.getUserAgent());
 		}
-		
+
 		HttpResponse requestResponse = null;
-		
+
 		try {
 			requestResponse = client.execute(request);
-		} catch (ClientProtocolException e) {
-			// TODO handle Client Protocol exception
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO handle IOException exception
-			e.printStackTrace();
+		} catch (Exception e) {
+
 		}
-		
+
 		return requestResponse;
-				
+
 	}
-		
+
 }

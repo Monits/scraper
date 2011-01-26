@@ -32,7 +32,9 @@ public interface ScrapingService {
 	 * @param transform Defines the output in order to show the scrap done.
 	 *
 	 * @return Returns a String with the Scraped HTML
+	 * @throws Exception In case of unexpected exception
 	 */
-	public String scrap(RequestGenerator rGen, Transformation transform);
+	public String scrap(RequestGenerator rGen, Transformation transform)
+					throws Exception;
 
 }
