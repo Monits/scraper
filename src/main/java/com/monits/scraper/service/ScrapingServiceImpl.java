@@ -19,17 +19,20 @@ public class ScrapingServiceImpl implements ScrapingService {
 
 		try {
 			data = EntityUtils.toString(response.getEntity());
+			data = transform.transform(data);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			// TODO Hande ParseException
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Handle IOException
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Exception
 		}
 
 		// TODO : Sanitize HTML
 
-		return transform.transform(data);
+		return data;
 	}
 
 	private HttpResponse performRequest(RequestGenerator req){
