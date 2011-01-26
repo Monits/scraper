@@ -1,5 +1,8 @@
 package com.monits.scraper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 
  *
@@ -12,14 +15,17 @@ package com.monits.scraper;
  * @link http://www.monits.com/
  * @since 1.0.0
  */
+
+
+
+
 public class ConstantRequestGenerator implements RequestGenerator {
 
-
-	private String verb;
+	
+	private RequestVerb verb;
 	private String url;
 	private String userAgent;
-	private String session;
-	private String cookie;
+	private Map<String,String> cookie;
 	
 	  
 	 
@@ -27,15 +33,13 @@ public class ConstantRequestGenerator implements RequestGenerator {
 		// TODO Auto-generated constructor stub
 	}
 	
-	  
-	
 	
 	/* (non-Javadoc)
 	 * @see com.monits.scraper.RequestGenerator#getVerb()
 	 * @return verb object  
 	 */
 	@Override
-	public String getVerb() {
+	public  RequestVerb getVerb() {
 		return verb;
 	}
     
@@ -43,7 +47,7 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	 * 
 	 * @param verb
 	 */
-	public void setVerb(String verb) {
+	public void setVerb(RequestVerb verb) {
 		this.verb = verb;
 	}
 
@@ -83,35 +87,18 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	
 	
 	/* (non-Javadoc)
-	 * @see com.monits.scraper.RequestGenerator#getSession()
-	 * @return session object
-	 */
-	
-	//@Override
-	//public String getSession() {
-	//	return session;
-	//}
-/**
- * 
- * @param session
- */
-	//public void setSession(String session) {
-	//	this.session = session;
-	//}
-
-	/* (non-Javadoc)
 	 * @see com.monits.scraper.RequestGenerator#getCookie()
 	 * @return cookie object
 	 */
 	@Override
-	public String getCookie() {
+	public  Map<String, String> getCookie() {
 		return cookie;
 	}
 /**
  * 
  * @param cookie
  */
-	public void setCookie(String cookie) {
+	public void setCookie(Map<String,String> cookie) {
 		this.cookie = cookie;
 	}
 

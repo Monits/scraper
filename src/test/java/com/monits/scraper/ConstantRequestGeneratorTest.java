@@ -10,6 +10,9 @@
  */
 package com.monits.scraper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,7 +33,14 @@ public class ConstantRequestGeneratorTest {
 	
 	ConstantRequestGenerator crg = new ConstantRequestGenerator();
 	
-	private String url, verb, session, cookie, userAgent;
+	
+	private String url, userAgent;
+	private Map<String, String> cookies = new HashMap<String, String>();
+    private RequestVerb verb; 
+	
+	
+	
+	
 	
 
 	/**
@@ -38,7 +48,10 @@ public class ConstantRequestGeneratorTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		
+       
+		cookies.put("Cookie1", "HolaquetalSoyLaCookie1");
+		cookies.put("Cookie2", "imTheCookie2");
+		cookies.put("Cookie3", "ImTheCookie3");
 	}
 
 	/**
@@ -54,32 +67,30 @@ public class ConstantRequestGeneratorTest {
 	@Test
 	public void testConstantRequestGenerator() {
 		
+		
 		/**
 		 * Testing setters, this should work 
 		 */
 		this.crg.setUrl("http://www.google.com");
-		this.crg.setCookie("username=J23Esta expires=Tuesday,November18,2011,10:23:05am path=/tutorials/ domain=LocalHost ");
-		//this.crg.setSession("userId= 990Auj");
+		this.crg.setCookie(cookies);
 		this.crg.setUserAgent("Mozilla Firefox 3.2.1.2.3");
-		this.crg.setVerb("GET");
+		this.crg.setVerb(verb);
 		
 		/**
 		 * Testing getters, this should work
 		 */
 		this.url = crg.getUrl();
-		this.cookie = crg.getCookie();
-		//this.session= crg.getSession();
+		this.cookies = crg.getCookie();
 		this.userAgent= crg.getUserAgent();
 		this.verb = crg.getVerb();
 		
 		/**
 		 * Asserts for every case.
 		 */
-		Assert.assertEquals("URL get and set doesn't work", "http://www.google.com", url);
-		Assert.assertEquals("Cookie get and set doesn't work", "username=J23Esta expires=Tuesday,November18,2011,10:23:05am path=/tutorials/ domain=LocalHost ", cookie);
-		//Assert.assertEquals("Session get and set doesn't work", "userId= 990Auj", session);
-		Assert.assertEquals("userAgent get and set doesn't work", "Mozilla Firefox 3.2.1.2.3", userAgent);
-		Assert.assertEquals("Verb get and set doesn't work", "GET", verb);
+		Assert.assertEquals("URL get and set doesn't work", url, crg.getUrl());
+		Assert.assertEquals("Cookie get and set doesn't work",cookies, crg.getCookie());
+		Assert.assertEquals("userAgent get and set doesn't work",userAgent, crg.getUserAgent());
+		Assert.assertEquals("Verb get and set doesn't work", verb, crg.getVerb());
 	}
 
 }

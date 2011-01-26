@@ -1,5 +1,8 @@
 
 package com.monits.scraper;
+
+import java.util.Map;
+
 /**
  * 
  *
@@ -17,9 +20,9 @@ package com.monits.scraper;
 public interface RequestGenerator {
 /**
  * @Obtain the verb from the request 
- * @return  String
+ * @return  RequestVerb
  */
-	public String getVerb();
+	public RequestVerb getVerb();
 
 	/**
 	 * @Obtain the url from the request 
@@ -33,16 +36,11 @@ public interface RequestGenerator {
 	 */
 	public String getUserAgent();
 
-	/**
-	 * @Obtain the session from the request
-	 * @return String
-	 */
-	//public String getSession();
 
 	/**
 	 * @Obtain the cookie from the request
 	 * @return String
 	 */
-	public String getCookie();
+	public Map<String, String> getCookie();
 
 }
