@@ -1,7 +1,6 @@
 /**
  * Test for the class ConstantRequestGenerator
  * 
- * @author    ndebernardi <ndebernardi@monits.com>
  * @copyright 2011 Monits
  * @license   Copyright (C) 2011. All rights reserved
  * @version   Release: 1.0.0
@@ -24,34 +23,29 @@ import com.monits.scraper.requests.RequestVerb;
 /**
  * Test for the class ConstantRequestGenerator
  * 
- * @author    ndebernardi <ndebernardi@monits.com>
+ * @author    Nicolas De Bernardi <ndebernardi@monits.com>
  * @copyright 2011 Monits
  * @license   Copyright (C) 2011. All rights reserved
  * @version   Release: 1.0.0
  * @link      http://www.monits.com/
  * @since     1.0.0
  */
-
 public class ConstantRequestGeneratorTest {
 	
 	ConstantRequestGenerator crg = new ConstantRequestGenerator();
 	
-	
 	private String url, userAgent;
 	private Map<String, String> cookies = new HashMap<String, String>();
-    private RequestVerb verb; 
-	
-	
-	
-	
-	
+	private RequestVerb verb; 
 
 	/**
+	 * Setup cookies
+	 * 
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-       
+
 		cookies.put("Cookie1", "HolaquetalSoyLaCookie1");
 		cookies.put("Cookie2", "imTheCookie2");
 		cookies.put("Cookie3", "ImTheCookie3");
@@ -65,31 +59,23 @@ public class ConstantRequestGeneratorTest {
 	}
 
 	/**
-	 * Test method for ConstantRequestGenerator.ConstantRequestGenerator()}.
+	 * Test method for ConstantRequestGenerator.ConstantRequestGenerator().
 	 */
 	@Test
 	public void testConstantRequestGenerator() {
-		
-		
-		/**
-		 * Testing setters, this should work 
-		 */
+		// Testing setters, this should work 
 		this.crg.setUrl("http://www.google.com");
 		this.crg.setCookie(cookies);
 		this.crg.setUserAgent("Mozilla Firefox 3.2.1.2.3");
 		this.crg.setVerb(verb);
 		
-		/**
-		 * Testing getters, this should work
-		 */
+		// Testing getters, this should work
 		this.url = crg.getUrl();
 		this.cookies = crg.getCookie();
 		this.userAgent= crg.getUserAgent();
 		this.verb = crg.getVerb();
 		
-		/**
-		 * Asserts for every case.
-		 */
+		// Asserts for every case.
 		Assert.assertEquals("URL get and set doesn't work", url, crg.getUrl());
 		Assert.assertEquals("Cookie get and set doesn't work",cookies, crg.getCookie());
 		Assert.assertEquals("userAgent get and set doesn't work",userAgent, crg.getUserAgent());

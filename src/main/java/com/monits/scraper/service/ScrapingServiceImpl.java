@@ -1,3 +1,12 @@
+/**
+ * Class that implements the ScrapingService interface.
+ * 
+ * @copyright 2011 Monits
+ * @license Copyright (C) 2011. All rights reserved
+ * @version Release: 1.0.0
+ * @link http://www.monits.com/
+ * @since 1.0.0
+ */
 package com.monits.scraper.service;
 
 import java.util.Iterator;
@@ -18,6 +27,16 @@ import org.apache.http.util.EntityUtils;
 import com.monits.scraper.requests.RequestGenerator;
 import com.monits.scraper.transformation.Transformation;
 
+/**
+ * Class that implements the ScrapingService interface.
+ * 
+ * @author Gaston Muñiz <gmuniz@monits.com>
+ * @copyright 2011 Monits
+ * @license Copyright (C) 2011. All rights reserved
+ * @version Release: 1.0.0
+ * @link http://www.monits.com/
+ * @since 1.0.0
+ */
 public class ScrapingServiceImpl implements ScrapingService {
 
 	@Override
@@ -91,7 +110,6 @@ public class ScrapingServiceImpl implements ScrapingService {
 		}
 
 		if (requestParams.getUserAgent() != null) {
-
 			request.setHeader("User-Agent",requestParams.getUserAgent());
 		}
 

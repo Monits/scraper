@@ -27,7 +27,8 @@ import org.junit.Test;
  */
 public class XSLTTransformationTest {
 	
-	private String oCode, aCode;
+	private String originalCode;
+	private String transformedCode;
 
 	/**
 	 * @throws java.lang.Exception
@@ -50,7 +51,7 @@ public class XSLTTransformationTest {
 	public void testTransform() {
 		
 		//Example html code.
-		oCode = "<span title=\"Hola\">hola mundo</span>";
+		originalCode = "<span title=\"Hola\">hola mundo</span>";
 		
 		String filePath = getClass().getClassLoader().getResource("scrapTest.xsl").toString();
 		
@@ -64,12 +65,12 @@ public class XSLTTransformationTest {
 		
 		//Saving the transformed string into aCode variable.
 		try {
-			aCode = trans.transform(oCode);	
+			transformedCode = trans.transform(originalCode);	
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}		
 		
-		Assert.assertNotNull("Not null object expected.", aCode);
+		Assert.assertNotNull("Not null object expected.", transformedCode);
 		
 	}
 

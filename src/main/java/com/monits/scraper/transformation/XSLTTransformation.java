@@ -13,9 +13,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,6 +25,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -47,19 +50,34 @@ public class XSLTTransformation implements Transformation {
 	
 	protected Transformer xslt;
 	
-	public XSLTTransformation(String xslt) throws Exception {
+	public XSLTTransformation(String xslt) {
 		
-		URI xsltUri = new URI(xslt);
-		InputStream stream = new FileInputStream(new File(xsltUri));
+		URI xsltUri;
+		try {
+			xsltUri = new URI(xslt);
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+		
+		InputStream stream;
+		try {
+			stream = new FileInputStream(new File(xsltUri));
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 		
 		Source xsltSource = new StreamSource(stream);
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		this.xslt = transformerFactory.newTransformer(xsltSource);
+		try {
+			this.xslt = transformerFactory.newTransformer(xsltSource);
+		} catch (TransformerConfigurationException e) {
+			throw new RuntimeException(e);
+		}
 		
 	}
 	
 	@Override
-	public String transform(String xhtml) throws Exception {
+	public String transform(String xhtml) {
 		
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(DEFAULT_INITIAL_BUFFER_SIZE);
 		Result result = new StreamResult(outputStream);
@@ -86,12 +104,10 @@ public class XSLTTransformation implements Transformation {
 	 * Generate a source from a string containing the XHTML.
 	 * 
 	 * @param xhtml The XHTML to be contained in the source.
-	 * 
 	 * @return The source created.
-	 * 
 	 * @throws RuntimeException
 	 */
-	private Source getSource(String xhtml) throws Exception {
+	private Source getSource(String xhtml) {
 		DocumentBuilderFactory docBuildFactory = DocumentBuilderFactory.newInstance();
 		docBuildFactory.setValidating(false);
 		docBuildFactory.setExpandEntityReferences(false);

@@ -8,7 +8,7 @@
  * @link http://www.monits.com/
  * @since 1.0.0
  */
-package com.monits.scraper.requests;
+package com.monits.scraper;
 
 import java.util.Map;
 

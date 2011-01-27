@@ -27,7 +27,8 @@ import org.junit.Test;
  */
 public class IdentityTest {
 	
-	private String expectedString, actualString;
+	private String expectedString;
+	private String actualString;
 
 	/**
 	 * @throws java.lang.Exception
@@ -48,8 +49,8 @@ public class IdentityTest {
 	 */
 	@Test
 	public void testTransform() {
-		
 		//Everything here should work perfectly.
+		
 		//Initializing Identity class object.
 		Identity id = new Identity();
 		

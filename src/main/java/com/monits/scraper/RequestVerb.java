@@ -8,7 +8,7 @@
  * @since 1.0.0
  */
  
-package com.monits.scraper.requests;
+package com.monits.scraper;
 
 /**
  * This enum have the Get, Put, Delete and post function for the verb of the request.
