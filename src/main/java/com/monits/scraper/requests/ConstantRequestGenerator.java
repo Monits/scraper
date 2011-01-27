@@ -1,4 +1,4 @@
-package com.monits.scraper;
+package com.monits.scraper.requests;
 
 import java.util.Map;
 

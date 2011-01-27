@@ -9,7 +9,7 @@
  */
 package com.monits.scraper.service;
 
-import com.monits.scraper.RequestGenerator;
+import com.monits.scraper.requests.RequestGenerator;
 import com.monits.scraper.transformation.Transformation;
 
 /**
@@ -32,9 +32,9 @@ public interface ScrapingService {
 	 * @param transform Defines the output in order to show the scrap done.
 	 *
 	 * @return Returns a String with the Scraped HTML
-	 * @throws ScrapServiceException in case of unexpected exception.
+	 * @throws ScrapingServiceException in case of unexpected exception.
 	 */
 	public String scrap(RequestGenerator rGen, Transformation transform)
-		   throws ScrapServiceException;
+		   throws ScrapingServiceException;
 
 }

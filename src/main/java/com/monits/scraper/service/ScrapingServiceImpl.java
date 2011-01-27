@@ -15,14 +15,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.util.EntityUtils;
 
-import com.monits.scraper.RequestGenerator;
+import com.monits.scraper.requests.RequestGenerator;
 import com.monits.scraper.transformation.Transformation;
 
 public class ScrapingServiceImpl implements ScrapingService {
 
 	@Override
 	public String scrap (RequestGenerator rGen,	Transformation transform)
-		   throws ScrapServiceException {
+		   throws ScrapingServiceException {
 
 		HttpResponse response;
 		String data = null;
@@ -33,7 +33,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 			data = transform.transform(data);
 
 		} catch (Exception e) {
-			throw new ScrapServiceException(e.getMessage());
+			throw new ScrapingServiceException(e.getMessage());
 		}
 
 		/* TODO : Sanitize HTML */

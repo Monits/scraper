@@ -8,7 +8,7 @@
  * @link      http://www.monits.com/
  * @since     1.0.0
  */
-package com.monits.scraper;
+package com.monits.scraper.requests;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.monits.scraper.requests.ConstantRequestGenerator;
+import com.monits.scraper.requests.RequestVerb;
 
 /**
  * Test for the class ConstantRequestGenerator

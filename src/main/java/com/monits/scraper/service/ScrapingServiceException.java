@@ -18,7 +18,7 @@ package com.monits.scraper.service;
  * @link http://www.monits.com/
  * @since 1.0.0
  */
-public final class ScrapServiceException extends Exception {
+public final class ScrapingServiceException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public final class ScrapServiceException extends Exception {
 	 * by the Throwable.getCause() method).
 	 * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
 	 */
-	public ScrapServiceException(Throwable cause) {
+	public ScrapingServiceException(Throwable cause) {
 		super(cause);
 	}
 
@@ -39,7 +39,7 @@ public final class ScrapServiceException extends Exception {
 	 * @param message The detail message
 	 * (which is saved for later retrieval by the Throwable.getMessage() method)
 	 */
-	public ScrapServiceException(String message) {
+	public ScrapingServiceException(String message) {
 		super(message);
 	}
 
@@ -53,14 +53,14 @@ public final class ScrapServiceException extends Exception {
 	 * by the Throwable.getCause() method).
 	 * (A null value is permitted, and indicates that the cause is nonexistent or unknown.)
 	 */
-	public ScrapServiceException(String message, Throwable cause) {
+	public ScrapingServiceException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
 	 * Scraping Service Exception constructor with null message.
 	 */
-	public ScrapServiceException() {
+	public ScrapingServiceException() {
 		super();
 	}
 

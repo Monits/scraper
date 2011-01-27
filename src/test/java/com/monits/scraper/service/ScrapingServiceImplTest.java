@@ -10,8 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.monits.scraper.ConstantRequestGenerator;
-import com.monits.scraper.RequestVerb;
+import com.monits.scraper.requests.ConstantRequestGenerator;
+import com.monits.scraper.requests.RequestVerb;
 import com.monits.scraper.transformation.Identity;
 import com.monits.scraper.transformation.Transformation;
 
@@ -33,7 +33,7 @@ public class ScrapingServiceImplTest {
 	}
 	
 	@Test
-	public void scrapTest() throws ScrapServiceException {
+	public void scrapTest() throws ScrapingServiceException {
 		
 		cookies.put("Cookie1", "HolaquetalSoyLaCookie1");
 		cookies.put("Cookie2", "imTheCookie2");
