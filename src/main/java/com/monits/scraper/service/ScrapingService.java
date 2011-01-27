@@ -25,8 +25,9 @@ import com.monits.scraper.transformation.Transformation;
 public interface ScrapingService {
 
 	/**
-	 * This method resolves a HTTP request and obtains the String of the HTML Code,
-	 * that will be shown in a determinated output.
+	 * This method resolves a HTTP request and obtains
+	 * the String of the HTML Code that will be shown
+	 * in a determinated output.
 	 *
 	 * @param rGen Interface to manage HTTP Parameters of the Requests.
 	 * @param transform Defines the output in order to show the scrap done.

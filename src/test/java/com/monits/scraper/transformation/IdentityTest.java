@@ -1,5 +1,5 @@
 /**
- * Identity test for Implemented Transform Interface
+ * Identity test for Implemented Transform Interface.
  * 
  * @copyright 2011 Monits
  * @license   Copyright (C) 2011. All rights reserved
@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Identity test for Implemented Transform Interface
+ * Identity test for Implemented Transform Interface.
  * 
  * @author Fernando Herrera <fherrera@monits.com>
  * @copyright 2011 Monits

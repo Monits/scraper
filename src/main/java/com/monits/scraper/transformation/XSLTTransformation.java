@@ -50,6 +50,12 @@ public class XSLTTransformation implements Transformation {
 	
 	protected Transformer xslt;
 	
+	/**
+	 * Parameterized constructor, it builds the URI of the XSL that will be used
+	 * to transform the retrieved XHTML.
+	 * 
+	 * @param xslt The path to the XSL file.
+	 */
 	public XSLTTransformation(String xslt) {
 		
 		URI xsltUri;
