@@ -32,7 +32,7 @@ import com.monits.scraper.requests.RequestVerb;
  */
 public class ConstantRequestGeneratorTest {
 	
-	ConstantRequestGenerator crg = new ConstantRequestGenerator();
+	ConstantRequestGenerator crg;
 	
 	private String url, userAgent;
 	private Map<String, String> cookies = new HashMap<String, String>();
@@ -71,13 +71,13 @@ public class ConstantRequestGeneratorTest {
 		
 		// Testing getters, this should work
 		this.url = crg.getUrl();
-		this.cookies = crg.getCookie();
+		this.cookies = crg.getCookies();
 		this.userAgent= crg.getUserAgent();
 		this.verb = crg.getVerb();
 		
 		// Asserts for every case.
 		Assert.assertEquals("URL get and set doesn't work", url, crg.getUrl());
-		Assert.assertEquals("Cookie get and set doesn't work",cookies, crg.getCookie());
+		Assert.assertEquals("Cookie get and set doesn't work",cookies, crg.getCookies());
 		Assert.assertEquals("userAgent get and set doesn't work",userAgent, crg.getUserAgent());
 		Assert.assertEquals("Verb get and set doesn't work", verb, crg.getVerb());
 	}
