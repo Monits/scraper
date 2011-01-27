@@ -55,6 +55,6 @@ public interface RequestGenerator {
 	 * @Obtain the cookie from the request
 	 * @return String
 	 */
-	public Map<String, String> getCookie();
+	public Map<String, String> getCookies();
 
 }
