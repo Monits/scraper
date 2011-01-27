@@ -1,6 +1,6 @@
 /**
  * Class that implements the ScrapingService interface.
- * 
+ *
  * @copyright 2011 Monits
  * @license Copyright (C) 2011. All rights reserved
  * @version Release: 1.0.0
@@ -29,7 +29,7 @@ import com.monits.scraper.transformation.Transformation;
 
 /**
  * Class that implements the ScrapingService interface.
- * 
+ *
  * @author Gaston Muñiz <gmuniz@monits.com>
  * @copyright 2011 Monits
  * @license Copyright (C) 2011. All rights reserved
@@ -55,8 +55,6 @@ public class ScrapingServiceImpl implements ScrapingService {
 			throw new ScrapingServiceException(e.getMessage());
 		}
 
-		/* TODO : Sanitize HTML */
-
 		return data;
 	}
 
@@ -78,7 +76,6 @@ public class ScrapingServiceImpl implements ScrapingService {
 		case GET:
 			request = new HttpGet(requestParams.getUrl());
 			break;
-
 		case POST:
 			request = new HttpPost(requestParams.getUrl());
 			break;
@@ -95,9 +92,9 @@ public class ScrapingServiceImpl implements ScrapingService {
 
 		client.setCookieStore(cookieStore);
 
-		if (requestParams.getCookie() != null) {
+		if (requestParams.getCookies() != null) {
 
-			Map<String,String> cookieMap = requestParams.getCookie();
+			Map<String,String> cookieMap = requestParams.getCookies();
 
 			Iterator<Map.Entry<String, String>> cookieIterator = cookieMap.entrySet().iterator();
 

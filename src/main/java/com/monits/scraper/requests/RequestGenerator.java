@@ -1,7 +1,6 @@
 /**
- * Request Generator interface, needed to get the elements
- * for the generation of the HTTP request.
- * 
+ * Request Generator interface, generates the parameters for HTTP request.
+ *
  * @copyright 2011 Monits
  * @license Copyright (C) 2011. All rights reserved
  * @version Release: 1.0.0
@@ -13,9 +12,8 @@ package com.monits.scraper.requests;
 import java.util.Map;
 
 /**
- * Request Generator interface, needed to get the elements
- * for the generation of the HTTP request.
- * 
+ * Request Generator interface, generates the parameters for HTTP request.
+ *
  * @author ndebernardi <ndebernardia@monits.com>
  * @copyright 2011 Monits
  * @license Copyright (C) 2011. All rights reserved
@@ -24,36 +22,33 @@ import java.util.Map;
  * @since 1.0.0
  */
 public interface RequestGenerator {
-	
+
+
 	/**
-	 * HTTP Verb getter.
-	 * 
-	 * @Obtain the verb from the request 
-	 * @return  RequestVerb
+	 * Request's HTTP Verb getter.
+	 *
+	 * @return The verb from the generated request.
 	 */
 	public RequestVerb getVerb();
 
 	/**
-	 * Gets the URL.
-	 * 
-	 * @Obtain the url from the request 
-	 * @return String
+	 * Request's URL getter.
+	 *
+	 * @return a String with the url from the generated request.
 	 */
 	public String getUrl();
 
 	/**
-	 * Gets the user agent.
-	 * 
-	 * @Obtain the userAgent from the request
-	 * @return String
+	 * Request's User-Agent getter.
+	 *
+	 * @return A String with the userAgent from the generated request.
 	 */
 	public String getUserAgent();
 
 	/**
-	 * Gets the cookie data.
-	 * 
-	 * @Obtain the cookie from the request
-	 * @return String
+	 * Request's Cookies getter.
+	 *
+	 * @return a Map with all the cookies from the generated request.
 	 */
 	public Map<String, String> getCookies();
 

@@ -1,5 +1,5 @@
 /**
- * Class with the constant of the RequestGenerator Interface
+ * Class with the implementation of the RequestGenerator Interface
  *
  * @author ndebernardi <ndebernardi@monits.com>
  * @copyright 2011 Monits
@@ -13,7 +13,7 @@ package com.monits.scraper.requests;
 import java.util.Map;
 
 /**
- * Class with the constant of the RequestGenerator Interface
+ * Class with the implementation of the RequestGenerator Interface
  *
  * @author ndebernardi <ndebernardi@monits.com>
  * @copyright 2011 Monits
@@ -29,6 +29,26 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	private String userAgent;
 	private Map<String,String> cookies;
 
+	/**
+	 * HTTP Request constructor.
+	 *
+	 * @param url String that contains HTTP url.
+	 * @see {@link RequestVerb}
+	 */
+	public ConstantRequestGenerator(String url) {
+		this.url = url;
+		this.verb = RequestVerb.GET;
+		this.userAgent = null;
+		this.cookies = null;
+	}
+
+	/**
+	 * HTTP Request constructor.
+	 *
+	 * @param url String that cointains the http url.
+	 * @param verb from {@link RequestVerb} used to define HTTP Action.
+	 * @see {@link RequestVerb}
+	 */
 	public ConstantRequestGenerator(String url, RequestVerb verb) {
 		this.url = url;
 		this.verb = verb;
@@ -36,31 +56,49 @@ public class ConstantRequestGenerator implements RequestGenerator {
 		this.cookies = null;
 	}
 
-	public ConstantRequestGenerator(String url, String userAgent, Map<String,String> cookies) {
+
+	/**
+	 * HTTP Request constructor.
+	 *
+	 * @param url String that cointains the http url.
+	 * @param userAgent String that defines browsers range.
+	 * @param cookies Map with the cookies.
+	 */
+	public ConstantRequestGenerator(String url,
+									String userAgent,
+									Map<String,String> cookies) {
 		this.url = url;
 		this.verb = RequestVerb.GET;
 		this.userAgent = userAgent;
 		this.cookies = cookies;
 	}
 
-	public ConstantRequestGenerator(String url,RequestVerb verb, String userAgent, Map<String,String> cookies) {
+	/**
+	 * HTTP Request Constructor.
+	 *
+	 * @param url String that cointains the http url.
+	 * @param verb from {@link RequestVerb} used to define HTTP Action.
+	 * @param userAgent String that defines browsers range.
+	 * @param cookies Map with the cookies.
+	 * @see {@link RequestVerb}
+	 */
+	public ConstantRequestGenerator(String url,
+									RequestVerb verb,
+									String userAgent,
+									Map<String,String> cookies) {
 		this.url = url;
 		this.verb = verb;
 		this.userAgent = userAgent;
 		this.cookies = cookies;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.monits.scraper.RequestGenerator#getVerb()
-	 * @return verb object
-	 */
 	@Override
 	public  RequestVerb getVerb() {
 		return verb;
 	}
 
 	/**
-	 * Sets the request verb.
+	 * Sets the request verb to the generated request.
 	 *
 	 * @param verb The requested verb.
 	 */
@@ -68,63 +106,43 @@ public class ConstantRequestGenerator implements RequestGenerator {
 		this.verb = verb;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.monits.scraper.RequestGenerator#getUrl()
-	 * @return url object
-	 */
 	@Override
 	public String getUrl() {
 		return url;
 	}
 
-/**
- * Sets the URL.
- *
- * @param url The desired URL.
- */
+	/**
+	 * Sets an URL to the generated request.
+	 *
+	 * @param url The desired URL.
+	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.monits.scraper.RequestGenerator#getUserAgent()
-	 * @return userAgent object
-	 */
 	@Override
 	public String getUserAgent() {
 		return userAgent;
 	}
 
-/**
- * Sets the user agent.
- *
- * @param userAgent The needed User Agent.
- */
+	/**
+	 * Sets the user agent.
+	 *
+	 * @param userAgent sets an UserAgent to the generated request.
+	 */
 	public void setUserAgent(String userAgent) {
 		this.userAgent = userAgent;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.monits.scraper.RequestGenerator#getCookie()
-	 * @return cookie object
-	 */
 	@Override
 	public  Map<String, String> getCookies() {
 		return cookies;
 	}
 
-/**
- * Sets the needed data to create the cookie.
- *
- * @param cookies The needed data, in a string map.
- */
-	public void setCookie(Map<String,String> cookies) {
-		this.cookies = cookies;
-	}
-
 	/**
+	 * Sets a map of cookies to the generated request.
 	 *
-	 * @param cookies
+	 * @param cookies Map<String,String> with the cookies.
 	 */
 	public void setCookies(Map<String,String> cookies) {
 		this.cookies = cookies;
