@@ -56,23 +56,6 @@ public class ConstantRequestGenerator implements RequestGenerator {
 		this.cookies = null;
 	}
 
-
-	/**
-	 * HTTP Request constructor.
-	 *
-	 * @param url String that cointains the http url.
-	 * @param userAgent String that defines browsers range.
-	 * @param cookies Map with the cookies.
-	 */
-	public ConstantRequestGenerator(String url,
-									String userAgent,
-									Map<String,String> cookies) {
-		this.url = url;
-		this.verb = RequestVerb.GET;
-		this.userAgent = userAgent;
-		this.cookies = cookies;
-	}
-
 	/**
 	 * HTTP Request Constructor.
 	 *
@@ -82,10 +65,8 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	 * @param cookies Map with the cookies.
 	 * @see {@link RequestVerb}
 	 */
-	public ConstantRequestGenerator(String url,
-									RequestVerb verb,
-									String userAgent,
-									Map<String,String> cookies) {
+	public ConstantRequestGenerator(String url, RequestVerb verb,
+								String userAgent, Map<String,String> cookies) {
 		this.url = url;
 		this.verb = verb;
 		this.userAgent = userAgent;
