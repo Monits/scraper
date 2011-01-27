@@ -59,6 +59,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 		case GET:
 			request = new HttpGet(requestParams.getUrl());
 			break;
+
 		case POST:
 			request = new HttpPost(requestParams.getUrl());
 			break;
