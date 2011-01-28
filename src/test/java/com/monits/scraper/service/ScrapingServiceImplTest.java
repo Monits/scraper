@@ -74,7 +74,7 @@ public class ScrapingServiceImplTest {
 		final Capture<String> xhtmlCapture = new Capture<String>();
 		
 		EasyMock.expect(requestFF.getUrl())
-			.andReturn("http://www.minijuegos.com").anyTimes();
+			.andReturn("http://www.gmail.com").anyTimes();
 		EasyMock.expect(requestFF.getUserAgent())
 			.andReturn("Mozilla Firefox 3.2.1.2.3").anyTimes();
 		EasyMock.expect(requestFF.getCookies())
@@ -83,7 +83,7 @@ public class ScrapingServiceImplTest {
 			.anyTimes();
 		
 		EasyMock.expect(requestMobile.getUrl())
-			.andReturn("http://www.minijuegos.com").anyTimes();
+			.andReturn("http://www.gmail.com").anyTimes();
 		EasyMock.expect(requestMobile.getUserAgent())
 			.andReturn("Mozilla/5.0 (iPhone; U; CPU iPhone " +
 			"OS 4_0 like Mac OS X; en-us").anyTimes();
@@ -114,6 +114,7 @@ public class ScrapingServiceImplTest {
 		responseMobileUserAgent = sService.scrap(requestMobile, trans);
 		
 		Assert.assertNotSame("Both response equals, Failed" ,responseFFUserAgent, responseMobileUserAgent);
+		
 	}
 	
 	/**
@@ -184,7 +185,7 @@ public class ScrapingServiceImplTest {
 				.scrap(requestWithoutCookie, trans));
 		
 		Assert.assertNotSame("Both response equals, Failed", pruebaConCookie, pruebaSinCookie);
-	
+		
 	}
 	
 	/**
@@ -212,6 +213,6 @@ public class ScrapingServiceImplTest {
 		sService.scrap(request, trans);
 		
 	}
-	
+
 }
 

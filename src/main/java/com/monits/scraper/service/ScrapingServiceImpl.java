@@ -57,7 +57,6 @@ public class ScrapingServiceImpl implements ScrapingService {
 			response = performRequest(rGen);
 			data = EntityUtils.toString(response.getEntity());
 			data = transform.transform(data);
-
 		} catch (Exception e) {
 			throw new ScrapingServiceException(e.getMessage());
 		}
@@ -80,10 +79,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpUriRequest request = null;
-		CookieStore cookieStore = new BasicCookieStore();
-		client.setCookieStore(cookieStore);
-		Iterator<Map.Entry<String, String>> Iterator = null;
-
+	
 		switch (requestParams.getVerb()) {
 		case GET:
 			request = new HttpGet(requestParams.getUrl());
@@ -102,53 +98,88 @@ public class ScrapingServiceImpl implements ScrapingService {
 			break;
 			
 		default:
-			throw new Exception("No Support for " + requestParams
-					.getVerb() + " HTTP verb");
-			
+			throw new Exception("No Support for "
+					+ requestParams.getVerb() + " HTTP verb");
 		}
-		
+
 		if (request instanceof HttpEntityEnclosingRequestBase) {
 			
-			request
-				.setHeader("Content-Type","application/x-www-form-urlencoded");
+			if (requestParams.getBody() != null) {
+				request.setHeader(
+						"Content-Type","application/x-www-form-urlencoded");
 			
-	        List<NameValuePair> bodyValues = new ArrayList<NameValuePair>();
-	        
-	        if (requestParams.getBody() != null) {
-				Map<String,String> bodyMap = requestParams.getBody();
-				Iterator = bodyMap.entrySet().iterator();
-
-				while (Iterator.hasNext()) {
-					Map.Entry<String, String> bodyValuePair = Iterator.next();
-
-					bodyValues.add(new BasicNameValuePair(bodyValuePair
-							.getKey(), bodyValuePair.getValue()));
-				}
+				UrlEncodedFormEntity bodyEntity = buildBody(requestParams);
+				((HttpEntityEnclosingRequestBase)request).setEntity(bodyEntity);
 			}
-	        
-	        UrlEncodedFormEntity bodyEntity
-	        				= new UrlEncodedFormEntity(bodyValues,HTTP.UTF_8);
-	        ((HttpEntityEnclosingRequestBase) request).setEntity(bodyEntity);
 		}
 		
 		if (requestParams.getCookies() != null) {
-			Map<String,String> cookieMap = requestParams.getCookies();
-			Iterator = cookieMap.entrySet().iterator();
-
-			while (Iterator.hasNext()) {
-				Map.Entry<String, String> cookieValuePair = Iterator.next();
-
-				cookieStore.addCookie(new BasicClientCookie(cookieValuePair
-						.getKey(), cookieValuePair.getValue()));
-			}
+			
+			CookieStore cookieStore = buildCookies(requestParams);
+			client.setCookieStore(cookieStore);
 		}
 		
 		if (requestParams.getUserAgent() != null) {
-			request.setHeader("User-Agent",requestParams.getUserAgent());
+			request.setHeader("User-Agent", requestParams.getUserAgent());
 		}
 		
 		return client.execute(request);
 
 	}
+	
+	/**
+	 * Transforms all the items of a Map<String,String> into a 
+	 * UrlEncodedFormEntity, this is used as body for a PUT/POST request.
+	 * 
+	 * @param requestParams
+	 * @return the body for the a POST/PUT request
+	 * @throws Exception
+	 */
+	private UrlEncodedFormEntity buildBody(RequestGenerator requestParams) 
+		throws Exception {
+		
+		Iterator<Map.Entry<String, String>> bodyIterator = null;
+	    List<NameValuePair> bodyValues = new ArrayList<NameValuePair>();
+	        
+	    Map<String,String> bodyMap = requestParams.getBody();
+		bodyIterator = bodyMap.entrySet().iterator();
 
+		while (bodyIterator.hasNext()) {
+				Map.Entry<String, String> bodyValuePair = bodyIterator.next();
+
+		bodyValues.add(new BasicNameValuePair(
+						bodyValuePair.getKey(), bodyValuePair.getValue()));
+
+	   }
+	        
+	   return new UrlEncodedFormEntity(bodyValues,HTTP.UTF_8);
+	   
+	}
+
+	/**
+	 * Transform all the items in a Map<String,String> 
+	 * to cookies into a CookieStore.
+	 * 
+	 * @param requestParams
+	 * @return a CookieStore with all the cookies needed for the request
+	 * @throws Exception
+	 */
+	private CookieStore buildCookies(RequestGenerator requestParams)
+		throws Exception {
+		
+		Iterator<Map.Entry<String, String>> cookiesIterator = null;
+		CookieStore cookieStore = new BasicCookieStore();
+		Map<String,String> cookieMap = requestParams.getCookies();
+		
+		cookiesIterator = cookieMap.entrySet().iterator();
+
+		while (cookiesIterator.hasNext()) {
+			Map.Entry<String, String> cookieValuePair = cookiesIterator.next();
+
+			cookieStore.addCookie(new BasicClientCookie(
+					cookieValuePair.getKey(), cookieValuePair.getValue()));
+		}
+		
+		return cookieStore;
+	}	
 }
