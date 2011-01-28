@@ -28,6 +28,7 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	private String url;
 	private String userAgent;
 	private Map<String,String> cookies;
+	private Map<String,String> body;
 
 	/**
 	 * HTTP Request constructor.
@@ -36,10 +37,7 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	 * @see {@link RequestVerb}
 	 */
 	public ConstantRequestGenerator(String url) {
-		this.url = url;
-		this.verb = RequestVerb.GET;
-		this.userAgent = null;
-		this.cookies = null;
+		this(url, RequestVerb.GET, null, null);
 	}
 
 	/**
@@ -50,10 +48,7 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	 * @see {@link RequestVerb}
 	 */
 	public ConstantRequestGenerator(String url, RequestVerb verb) {
-		this.url = url;
-		this.verb = verb;
-		this.userAgent = null;
-		this.cookies = null;
+		this(url, verb, null, null);
 	}
 
 	/**
@@ -71,6 +66,7 @@ public class ConstantRequestGenerator implements RequestGenerator {
 		this.verb = verb;
 		this.userAgent = userAgent;
 		this.cookies = cookies;
+		this.body = null;
 	}
 
 	@Override
@@ -127,6 +123,21 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	 */
 	public void setCookies(Map<String,String> cookies) {
 		this.cookies = cookies;
+	}
+
+	/**
+	 * Sets a map that will be the body to the generated request
+	 * to do POST or PUT.
+	 *
+	 * @param body Map<String,String> with the cookies.
+	 */
+	public void setBody(Map<String,String> body) {
+		this.body = body;
+	}
+
+	@Override
+	public Map<String, String> getBody() {
+		return this.body;
 	}
 
 }

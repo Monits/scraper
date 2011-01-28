@@ -29,15 +29,12 @@ import org.junit.Test;
  */
 public class ConstantRequestGeneratorTest {
 
-	Map<String, String> cookies;
-
 	/**
 	 *
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		cookies = new HashMap<String, String>();
 	}
 
 	/**
@@ -56,26 +53,27 @@ public class ConstantRequestGeneratorTest {
 		String url = "http://www.google.com";
 		RequestVerb verb = RequestVerb.GET;
 		String userAgent = "Mozilla Firefox 3.2.1.2.3";
-		cookies.put("guid", "1F074B19C51E42C5A5175C6F7D");
+		Map<String, String> stringMap = new HashMap<String, String>();
+		stringMap.put("guid", "1F074B19C51E42C5A5175C6F7D");
 
 		// Constructors Tests
 		ConstantRequestGenerator request1 = new ConstantRequestGenerator(url);
 
-		Assert.assertEquals("Constructor failed", url, request1.getUrl());
+		Assert.assertEquals("Constructor 1 failed", url, request1.getUrl());
 
 		ConstantRequestGenerator request2 =
 										new ConstantRequestGenerator(url, verb);
 
-		Assert.assertEquals("Constructor failed", url, request2.getUrl());
-		Assert.assertEquals("Constructor failed", verb, request2.getVerb());
+		Assert.assertEquals("Constructor 2 failed", url, request2.getUrl());
+		Assert.assertEquals("Constructor 2 failed", verb, request2.getVerb());
 
 		ConstantRequestGenerator request3 =
-					new ConstantRequestGenerator(url, verb, userAgent, cookies);
+					new ConstantRequestGenerator(url, verb, userAgent, stringMap);
 
-		Assert.assertEquals("Constructor failed", url, request3.getUrl());
-		Assert.assertEquals("Constructor failed", verb, request3.getVerb());
-		Assert.assertEquals("Constructor failed", userAgent, request3.getUserAgent());
-		Assert.assertEquals("Constructor failed", cookies, request3.getCookies());
+		Assert.assertEquals("Constructor 3 failed", url, request3.getUrl());
+		Assert.assertEquals("Constructor 3 failed", verb, request3.getVerb());
+		Assert.assertEquals("Constructor 3 failed", userAgent, request3.getUserAgent());
+		Assert.assertEquals("Constructor 3 failed", stringMap, request3.getCookies());
 
 		//Setters test
 		request1.setUrl(url);
@@ -84,11 +82,14 @@ public class ConstantRequestGeneratorTest {
 		request1.setUserAgent(userAgent);
 		Assert.assertEquals("failed setting userAgent", userAgent, request1.getUserAgent());
 
-		request1.setCookies(cookies);
-		Assert.assertEquals("failed setting url", cookies, request1.getCookies());
+		request1.setCookies(stringMap);
+		Assert.assertEquals("failed setting cookies", stringMap, request1.getCookies());
 
 		request1.setVerb(verb);
-		Assert.assertEquals("failed setting url", verb, request1.getVerb());
+		Assert.assertEquals("failed setting verb", verb, request1.getVerb());
+
+		request1.setBody(stringMap);
+		Assert.assertEquals("Failed setting body", stringMap, request1.getBody());
 
 	}
 

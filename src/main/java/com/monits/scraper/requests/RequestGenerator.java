@@ -23,7 +23,6 @@ import java.util.Map;
  */
 public interface RequestGenerator {
 
-
 	/**
 	 * Request's HTTP Verb getter.
 	 *
@@ -51,5 +50,12 @@ public interface RequestGenerator {
 	 * @return a Map with all the cookies from the generated request.
 	 */
 	public Map<String, String> getCookies();
+
+	/**
+	 * Request's body getter.
+	 *
+	 * @return a Map with the body from the generated request.
+	 */
+	public Map<String, String> getBody();
 
 }
