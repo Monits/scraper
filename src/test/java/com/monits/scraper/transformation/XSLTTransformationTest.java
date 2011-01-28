@@ -82,11 +82,7 @@ public class XSLTTransformationTest {
 		
 		trans = new XSLTTransformation(filePath);
 		
-		try {
-			trans.transform(originalCode);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		trans.transform(originalCode);
 		
 	}
 	
@@ -97,12 +93,8 @@ public class XSLTTransformationTest {
 	@Test(expected = RuntimeException.class)
 	public void testTransformUriSyntax() throws ScrapingServiceException {
 		
-		try {
-			//File path with an unsupported URI character.
-			trans = new XSLTTransformation("file:///home/fherrera/workspace/^scrapTest.xsl");
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		//File path with an unsupported URI character.
+		trans = new XSLTTransformation("file:///home/fherrera/workspace/^scrapTest.xsl");
 		
 	}
 	
@@ -113,12 +105,8 @@ public class XSLTTransformationTest {
 	@Test(expected = RuntimeException.class)
 	public void testTransformFileNotFound() throws ScrapingServiceException {
 		
-		try {
-			//File doesn't exist, so does the file path.
-			trans = new XSLTTransformation("file:///home/false.xsl");
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		//File doesn't exist, so does the file path.
+		trans = new XSLTTransformation("file:///home/false.xsl");
 	}
 	
 	/**
@@ -130,12 +118,8 @@ public class XSLTTransformationTest {
 		
 		this.filePath = getClass().getClassLoader().getResource("crapTest.xsl").toString();
 		
-		try {
-			//XSL file badly coded.
-			trans = new XSLTTransformation(filePath);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		//XSL file badly coded.
+		trans = new XSLTTransformation(filePath);
 	}
 	
 }
