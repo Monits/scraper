@@ -15,6 +15,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.monits.scraper.service.ScrapingServiceException;
+
 /**
  * Unit test for XSLTTransformation class.
  * 
@@ -29,12 +31,16 @@ public class XSLTTransformationTest {
 	
 	private String originalCode;
 	private String transformedCode;
-
+	private String filePath;
+	protected XSLTTransformation trans;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		//Original file path to a valid XSL.
+		this.filePath = getClass().getClassLoader().getResource("scrapTest.xsl").toString();
 	}
 
 	/**
@@ -46,32 +52,90 @@ public class XSLTTransformationTest {
 
 	/**
 	 * Test method for XSLTTransformation.transform.
+	 * This test should work properly. 
 	 */
 	@Test
-	public void testTransform() {
+	public void testTransform() throws ScrapingServiceException {
 		
-		//Example html code.
-		originalCode = "<span title=\"Hola\">hola mundo</span>";
-		
-		String filePath = getClass().getClassLoader().getResource("scrapTest.xsl").toString();
+		//Example code.
+		this.originalCode = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><catalog><cd><title>Empire Burlesque</title><artist>Bob Dylan</artist><country>USA</country>	<company>Columbia</company><price>10.90</price><year>1985</year></cd></catalog>";
 		
 		//Initializing a XSLTTransformation class object.
-		XSLTTransformation trans;
-		try {
-			trans = new XSLTTransformation(filePath);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		trans = new XSLTTransformation(filePath);		
 		
-		//Saving the transformed string into aCode variable.
-		try {
-			transformedCode = trans.transform(originalCode);	
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}		
+		//Saving the transformed string into transformedCode variable.
+		transformedCode = trans.transform(originalCode);
 		
 		Assert.assertNotNull("Not null object expected.", transformedCode);
 		
 	}
-
+	
+	/**
+	 * This method forces a TransformerException by sending an example code that can't
+	 * be transformed because it's not sanitized.
+	 */
+	@Test(expected = RuntimeException.class)
+	public void testTransformTransformer() throws ScrapingServiceException {
+		
+		//Example non-sanitized code.
+		this.originalCode = "<script>/tryitbanner.asp?secid=tryxslt&rnd=\"+Math.random()}</script>";
+		
+		trans = new XSLTTransformation(filePath);
+		
+		try {
+			trans.transform(originalCode);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	/**
+	 *  This test forces URISyntaxException by sending an invalid URI supported
+	 *  character in the URI path.
+	 */
+	@Test(expected = RuntimeException.class)
+	public void testTransformUriSyntax() throws ScrapingServiceException {
+		
+		try {
+			//File path with an unsupported URI character.
+			trans = new XSLTTransformation("file:///home/fherrera/workspace/^scrapTest.xsl");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	/**
+	 * This test forces the FileNotFoundException by specifying
+	 * a false path to the XSL file that will be used for the transformation.
+	 */
+	@Test(expected = RuntimeException.class)
+	public void testTransformFileNotFound() throws ScrapingServiceException {
+		
+		try {
+			//File doesn't exist, so does the file path.
+			trans = new XSLTTransformation("file:///home/false.xsl");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * This test forces the TransformerConfigurationException by specifying an
+	 * invalid XSL file.
+	 */
+	@Test(expected = RuntimeException.class)
+	public void testTransformTransformerConfiguration() throws ScrapingServiceException {
+		
+		this.filePath = getClass().getClassLoader().getResource("crapTest.xsl").toString();
+		
+		try {
+			//XSL file badly coded.
+			trans = new XSLTTransformation(filePath);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 }
