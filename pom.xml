@@ -158,5 +158,11 @@
       <version>${easymock.classextension.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>net.sourceforge.htmlcleaner</groupId>
+      <artifactId>htmlcleaner</artifactId>
+      <version>2.2</version>
+    </dependency>
   </dependencies>
 </project>
