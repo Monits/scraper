@@ -10,6 +10,7 @@
 package com.monits.scraper.service;
 
 import com.monits.scraper.requests.RequestGenerator;
+import com.monits.scraper.sanitation.Sanitation;
 import com.monits.scraper.transformation.Transformation;
 
 /**
@@ -25,8 +26,8 @@ import com.monits.scraper.transformation.Transformation;
 public interface ScrapingService {
 
 	/**
-	 * This method resolves a HTTP request and retrieves the String of 
-	 * the HTML Code that will be shown in a determinated output. 
+	 * This method resolves a HTTP request and retrieves the String of
+	 * the HTML Code that will be shown in a determinated output.
 	 *
 	 * @param rGen Interface to manage HTTP Parameters of the Requests.
 	 * @param transform Defines the output in order to show the scrap done.
@@ -35,5 +36,7 @@ public interface ScrapingService {
 	 */
 	public String scrap(RequestGenerator rGen, Transformation transform)
 		   throws ScrapingServiceException;
+
+	public void setSanitationParser(Sanitation parser);
 
 }

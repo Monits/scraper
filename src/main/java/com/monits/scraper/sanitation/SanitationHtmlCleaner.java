@@ -21,7 +21,6 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-
 /**
  * Sanitation using HtmlCleaner
  *
@@ -33,6 +32,7 @@ import org.jdom.output.XMLOutputter;
  * @since 1.0.0
  */
 public class SanitationHtmlCleaner implements Sanitation {
+
 
 	@Override
 	public String sanitize(String html) throws Exception {
@@ -69,6 +69,5 @@ public class SanitationHtmlCleaner implements Sanitation {
         return getJDomOutput(new StringReader(xml));
 
     }
-
 
 }

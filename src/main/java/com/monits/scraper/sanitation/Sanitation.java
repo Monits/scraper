@@ -9,7 +9,6 @@
  */
 package com.monits.scraper.sanitation;
 
-
 /**
  * Sanitation Interface
  *
