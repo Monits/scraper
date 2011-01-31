@@ -36,33 +36,39 @@ public class SanitationHtmlCleaner implements Sanitation {
 
 	@Override
 	public String sanitize(String html) throws Exception {
-		
+
 		HtmlCleaner cleaner = new HtmlCleaner();
         CleanerProperties props = cleaner.getProperties();
         props.setOmitXmlDeclaration(true);
         TagNode node = cleaner.clean(html);
         String result = new CompactXmlSerializer(cleaner.getProperties()).getAsString(node);
-        getJDomOutput(result);
-        
+
 		return  getJDomOutput(result);
-		
+
 	}
-	
+
+	/**
+	 * Sets Doctype to the sanitized HTML Code.
+	 *
+	 * @param reader
+	 * @return
+	 * @throws Exception
+	 */
 	private String getJDomOutput(Reader reader) throws Exception {
-		
+
         SAXBuilder saxBuilder = new SAXBuilder();
         final Document document;
         document = saxBuilder.build(reader);
         XMLOutputter xmlOutputter = new XMLOutputter(Format.getCompactFormat());
         return xmlOutputter.outputString(document);
-      
+
     }
 
     private String getJDomOutput(String xml) throws Exception {
-    	
+
         return getJDomOutput(new StringReader(xml));
-        
+
     }
 
-	
+
 }

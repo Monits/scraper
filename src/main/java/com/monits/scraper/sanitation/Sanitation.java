@@ -22,12 +22,12 @@ package com.monits.scraper.sanitation;
  */
 public interface Sanitation {
 
-	/** 
+	/**
 	 * Sanitation method.
-	 *  
-	 * @param html: A String with raw html code.
+	 *
+	 * @param html A String with raw html code.
 	 * @return A string with sanitized html
 	 */
 	public String sanitize(String html) throws Exception;
-	   
+
 }

@@ -32,6 +32,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import com.monits.scraper.requests.RequestGenerator;
+import com.monits.scraper.sanitation.Sanitation;
+import com.monits.scraper.sanitation.SanitationHtmlCleaner;
 import com.monits.scraper.transformation.Transformation;
 
 /**
@@ -46,6 +48,8 @@ import com.monits.scraper.transformation.Transformation;
  */
 public class ScrapingServiceImpl implements ScrapingService {
 
+	Sanitation sanitation = new SanitationHtmlCleaner();
+
 	@Override
 	public String scrap (RequestGenerator rGen,	Transformation transform)
 		   throws ScrapingServiceException {
@@ -53,12 +57,15 @@ public class ScrapingServiceImpl implements ScrapingService {
 		HttpResponse response;
 		String data = null;
 
+
 		try {
 			response = performRequest(rGen);
 			data = EntityUtils.toString(response.getEntity());
+			data = sanitation.sanitize(data);
 			data = transform.transform(data);
+
 		} catch (Exception e) {
-			throw new ScrapingServiceException(e.getMessage());
+			throw new ScrapingServiceException("Scraping Service Failure", e);
 		}
 
 		return data;
@@ -67,8 +74,8 @@ public class ScrapingServiceImpl implements ScrapingService {
 	/**
 	 * Using a RequestGenerator, generate the http request, performs it
 	 * and returns it's response.
-	 * This method throws a Exception when client.execute or UrlEncodedFormEntity 
-	 * constructor throws any Exception 
+	 * This method throws a Exception when client.execute or UrlEncodedFormEntity
+	 * constructor throws any Exception
 	 *
 	 * @param Requestgenerator
 	 * @return HttpResponse
@@ -79,68 +86,68 @@ public class ScrapingServiceImpl implements ScrapingService {
 
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpUriRequest request = null;
-	
+
 		switch (requestParams.getVerb()) {
 		case GET:
 			request = new HttpGet(requestParams.getUrl());
 			break;
-			
+
 		case POST:
 			request = new HttpPost(requestParams.getUrl());
 			break;
-			
+
 		case DELETE:
 			request = new HttpDelete(requestParams.getUrl());
 			break;
-			
+
 		case PUT:
 			request = new HttpPut(requestParams.getUrl());
 			break;
-			
+
 		default:
 			throw new Exception("No Support for "
 					+ requestParams.getVerb() + " HTTP verb");
 		}
 
 		if (request instanceof HttpEntityEnclosingRequestBase) {
-			
+
 			if (requestParams.getBody() != null) {
 				request.setHeader(
 						"Content-Type","application/x-www-form-urlencoded");
-			
+
 				UrlEncodedFormEntity bodyEntity = buildBody(requestParams);
 				((HttpEntityEnclosingRequestBase)request).setEntity(bodyEntity);
 			}
 		}
-		
+
 		if (requestParams.getCookies() != null) {
-			
+
 			CookieStore cookieStore = buildCookies(requestParams);
 			client.setCookieStore(cookieStore);
 		}
-		
+
 		if (requestParams.getUserAgent() != null) {
 			request.setHeader("User-Agent", requestParams.getUserAgent());
 		}
-		
+
 		return client.execute(request);
 
 	}
-	
+
 	/**
-	 * Transforms all the items of a Map<String,String> into a 
+	 * Transforms all the items of a Map<String,String> into a
 	 * UrlEncodedFormEntity, this is used as body for a PUT/POST request.
-	 * 
+	 *
 	 * @param requestParams
 	 * @return the body for the a POST/PUT request
 	 * @throws Exception
 	 */
-	private UrlEncodedFormEntity buildBody(RequestGenerator requestParams) 
+	private UrlEncodedFormEntity buildBody(RequestGenerator requestParams)
 		throws Exception {
-		
+
 		Iterator<Map.Entry<String, String>> bodyIterator = null;
 	    List<NameValuePair> bodyValues = new ArrayList<NameValuePair>();
-	        
+
 	    Map<String,String> bodyMap = requestParams.getBody();
 		bodyIterator = bodyMap.entrySet().iterator();
 
@@ -151,26 +158,26 @@ public class ScrapingServiceImpl implements ScrapingService {
 						bodyValuePair.getKey(), bodyValuePair.getValue()));
 
 	   }
-	        
+
 	   return new UrlEncodedFormEntity(bodyValues,HTTP.UTF_8);
-	   
+
 	}
 
 	/**
-	 * Transform all the items in a Map<String,String> 
+	 * Transform all the items in a Map<String,String>
 	 * to cookies into a CookieStore.
-	 * 
+	 *
 	 * @param requestParams
 	 * @return a CookieStore with all the cookies needed for the request
 	 * @throws Exception
 	 */
 	private CookieStore buildCookies(RequestGenerator requestParams)
 		throws Exception {
-		
+
 		Iterator<Map.Entry<String, String>> cookiesIterator = null;
 		CookieStore cookieStore = new BasicCookieStore();
 		Map<String,String> cookieMap = requestParams.getCookies();
-		
+
 		cookiesIterator = cookieMap.entrySet().iterator();
 
 		while (cookiesIterator.hasNext()) {
@@ -179,7 +186,11 @@ public class ScrapingServiceImpl implements ScrapingService {
 			cookieStore.addCookie(new BasicClientCookie(
 					cookieValuePair.getKey(), cookieValuePair.getValue()));
 		}
-		
+
 		return cookieStore;
-	}	
+	}
+
+	public void setSanitationManager (Sanitation sanitation) {
+		this.sanitation = sanitation;
+	}
 }
