@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import com.monits.scraper.requests.RequestGenerator;
 import com.monits.scraper.requests.RequestVerb;
+import com.monits.scraper.sanitation.Sanitation;
 import com.monits.scraper.transformation.Transformation;
 
 /**
@@ -45,6 +46,21 @@ public class ScrapingServiceImplTest {
 	@Before
 	public void setUp() throws Exception {
 		sService = new ScrapingServiceImpl();
+		
+		Sanitation sanitizer = EasyMock.createMock(Sanitation.class);
+		
+		final Capture<String> sanitationCapture = new Capture<String>();
+		
+		EasyMock.expect(sanitizer.sanitize(EasyMock.capture(sanitationCapture)))
+		.andAnswer(new IAnswer<String>() {
+			@Override
+			public String answer() throws Throwable {
+				return sanitationCapture.getValue();
+				
+			}
+		}).anyTimes();
+		
+		EasyMock.replay(sanitizer);
 	}
 
 	@After
@@ -56,22 +72,23 @@ public class ScrapingServiceImplTest {
 	 * Transformation transform),
 	 * Check the returns with two different types of UserAgent from a page 
 	 * who support both types ,the returns obviously have to be different
-	 * 
-	 * @throws ScrapingServiceException
+	 * @throws Exception 
 	 */
 	@Test
-	public void testScrapMobilePcBrowser() throws ScrapingServiceException {
+	public void testScrapMobilePcBrowser() throws Exception {
 
 		RequestGenerator requestFF = EasyMock
 			.createMock(RequestGenerator.class);
 		RequestGenerator requestMobile = EasyMock
 			.createMock(RequestGenerator.class);
+		
 		Transformation trans = EasyMock.createMock(Transformation.class);
 		
 		String responseFFUserAgent;
 		String responseMobileUserAgent;
 	
 		final Capture<String> xhtmlCapture = new Capture<String>();
+
 		
 		EasyMock.expect(requestFF.getUrl())
 			.andReturn("http://www.gmail.com").anyTimes();
@@ -93,12 +110,12 @@ public class ScrapingServiceImplTest {
 			.andReturn(RequestVerb.GET).anyTimes();
 		
 		EasyMock.expect(trans.transform(EasyMock.capture(xhtmlCapture)))
-		.andAnswer(new IAnswer<String>() {
+			.andAnswer(new IAnswer<String>() {
 
-			@Override
-			public String answer() throws Throwable {
-				return xhtmlCapture.getValue();
-			}
+				@Override
+				public String answer() throws Throwable {
+					return xhtmlCapture.getValue();
+				}
 			
 		}).anyTimes();
 		
@@ -113,8 +130,8 @@ public class ScrapingServiceImplTest {
 					.scrap(requestMobile, trans));
 		responseMobileUserAgent = sService.scrap(requestMobile, trans);
 		
-		Assert.assertNotSame("Both response equals, Failed" ,responseFFUserAgent, responseMobileUserAgent);
-		
+		Assert.assertNotSame("Both response equals, Failed" ,
+				responseFFUserAgent, responseMobileUserAgent);
 	}
 	
 	/**
@@ -123,16 +140,16 @@ public class ScrapingServiceImplTest {
 	 * Check the return with and without "guid" cookie from a page who will 
 	 * response a different "html" in each case
 	 * They have to be different
-	 * 
-	 * @throws ScrapingServiceException
+	 * @throws Exception 
 	 */
 	@Test
-	public void testScrapCookieWeb() throws ScrapingServiceException {
+	public void testScrapCookieWeb() throws Exception {
 		
 		RequestGenerator requestCookie = EasyMock
 			.createMock(RequestGenerator.class);
 		RequestGenerator requestWithoutCookie = EasyMock
 			.createMock(RequestGenerator.class);
+		
 		Transformation trans = EasyMock.createMock(Transformation.class);
 		
 		String pruebaConCookie;
@@ -184,8 +201,8 @@ public class ScrapingServiceImplTest {
 		Assert.assertNotNull("Request Without Cookie Failed",sService
 				.scrap(requestWithoutCookie, trans));
 		
-		Assert.assertNotSame("Both response equals, Failed", pruebaConCookie, pruebaSinCookie);
-		
+		Assert.assertNotSame("Both response equals, Failed", pruebaConCookie,
+				pruebaSinCookie);
 	}
 	
 	/**
@@ -197,7 +214,7 @@ public class ScrapingServiceImplTest {
 	 * @throws ScrapingServiceException
 	 */
 	@Test(expected = ScrapingServiceException.class)
-	public void testScrapingServiceWronlUrl() throws ScrapingServiceException {
+	public void testScrapingServiceWrongUrl() throws ScrapingServiceException {
 		
 		RequestGenerator request = EasyMock.createMock(RequestGenerator.class);
 		Transformation trans = EasyMock.createMock(Transformation.class);
