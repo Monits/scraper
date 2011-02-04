@@ -9,6 +9,8 @@
  */
 package com.monits.scraper.service;
 
+import org.htmlcleaner.HtmlCleaner;
+
 import com.monits.scraper.requests.RequestGenerator;
 import com.monits.scraper.sanitation.Sanitation;
 import com.monits.scraper.transformation.Transformation;
@@ -37,6 +39,12 @@ public interface ScrapingService {
 	public String scrap(RequestGenerator rGen, Transformation transform)
 		   throws ScrapingServiceException;
 
-	public void setSanitationParser(Sanitation parser);
+	/**
+	 * Sets a Sanitizer to perform HTML sanitation. HtmlCleaner is set as default.
+	 *
+	 * @param htmlSanitizer
+	 * @see {@link HtmlCleaner}, {@link Sanitation}
+	 */
+	public void setSanitizer(Sanitation htmlSanitizer);
 
 }

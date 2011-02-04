@@ -48,7 +48,7 @@ import com.monits.scraper.transformation.Transformation;
  */
 public class ScrapingServiceImpl implements ScrapingService {
 
-	Sanitation parser = new SanitationHtmlCleaner();
+	Sanitation htmlSanitizer = new SanitationHtmlCleaner();
 
 	@Override
 	public String scrap (RequestGenerator rGen,	Transformation transform)
@@ -60,7 +60,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 		try {
 			response = performRequest(rGen);
 			data = EntityUtils.toString(response.getEntity());
-			data = parser.sanitize(data);
+			data = htmlSanitizer.sanitize(data);
 			data = transform.transform(data);
 
 		} catch (Exception e) {
@@ -190,7 +190,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 	}
 
 	@Override
-	public void setSanitationParser (Sanitation parser) {
-		this.parser = parser;
+	public void setSanitizer (Sanitation sanitizer) {
+		this.htmlSanitizer = sanitizer;
 	}
 }
