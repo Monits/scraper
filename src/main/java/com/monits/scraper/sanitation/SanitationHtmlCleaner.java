@@ -43,8 +43,8 @@ public class SanitationHtmlCleaner implements Sanitation {
         TagNode node = cleaner.clean(html);
         String result = new CompactXmlSerializer(cleaner.getProperties()).getAsString(node);
 
-		return  getJDomOutput(result);
-
+        return  getJDomOutput(result);
+       
 	}
 
 	/**
