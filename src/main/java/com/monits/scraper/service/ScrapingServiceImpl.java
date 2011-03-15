@@ -48,7 +48,7 @@ import com.monits.scraper.transformation.Transformation;
  */
 public class ScrapingServiceImpl implements ScrapingService {
 
-	Sanitation htmlSanitizer = new SanitationHtmlCleaner();
+	protected Sanitation htmlSanitizer = new SanitationHtmlCleaner();
 
 	@Override
 	public String scrap (RequestGenerator rGen,	Transformation transform)
