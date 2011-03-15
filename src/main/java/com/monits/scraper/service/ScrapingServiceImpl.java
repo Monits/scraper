@@ -27,6 +27,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
@@ -77,6 +78,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 			SSLSocketFactory ssf = new SSLSocketFactory(ts);
 			SchemeRegistry schemeRegistry = new SchemeRegistry();
 			schemeRegistry.register(new Scheme("https", 443, ssf));
+			schemeRegistry.register(new Scheme("http", 80, new PlainSocketFactory()));
 			connManager = new ThreadSafeClientConnManager(schemeRegistry);
 		} catch (Exception e) {
 		}
