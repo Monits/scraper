@@ -9,6 +9,8 @@
  */
 package com.monits.scraper.service;
 
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +26,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -49,7 +57,31 @@ import com.monits.scraper.transformation.Transformation;
 public class ScrapingServiceImpl implements ScrapingService {
 
 	protected Sanitation htmlSanitizer = new SanitationHtmlCleaner();
+	private ClientConnectionManager connManager;
+	
+	/**
+	 * Default constructor.
+	 */
+	public ScrapingServiceImpl() {
+		// Create a connection manager that will trust all certificates
+		TrustStrategy ts = new TrustStrategy() {
+			@Override
+			public boolean isTrusted(X509Certificate[] chain, String authType)
+					throws CertificateException {
+				// Trust everything
+				return true;
+			}
+		};
 
+		try {
+			SSLSocketFactory ssf = new SSLSocketFactory(ts);
+			SchemeRegistry schemeRegistry = new SchemeRegistry();
+			schemeRegistry.register(new Scheme("https", 443, ssf));
+			connManager = new ThreadSafeClientConnManager(schemeRegistry);
+		} catch (Exception e) {
+		}
+	}
+	
 	@Override
 	public String scrap (RequestGenerator rGen,	Transformation transform)
 		   throws ScrapingServiceException {
@@ -83,7 +115,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 	private HttpResponse performRequest(RequestGenerator requestParams)
 			throws Exception {
 
-		DefaultHttpClient client = new DefaultHttpClient();
+		DefaultHttpClient client = new DefaultHttpClient(connManager);
 		HttpUriRequest request = null;
 
 		switch (requestParams.getVerb()) {
@@ -128,7 +160,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 		if (requestParams.getUserAgent() != null) {
 			request.setHeader("User-Agent", requestParams.getUserAgent());
 		}
-
+		
 		return client.execute(request);
 
 	}
