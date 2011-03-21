@@ -9,11 +9,15 @@
  */
 package com.monits.scraper.service;
 
+import java.net.URLConnection;
+
+import org.apache.http.HttpConnection;
 import org.htmlcleaner.HtmlCleaner;
 
 import com.monits.scraper.requests.RequestGenerator;
 import com.monits.scraper.sanitation.Sanitation;
 import com.monits.scraper.transformation.Transformation;
+import com.sun.corba.se.spi.legacy.connection.Connection;
 
 /**
  * Scraping Service
@@ -46,5 +50,10 @@ public interface ScrapingService {
 	 * @see {@link HtmlCleaner}, {@link Sanitation}
 	 */
 	public void setSanitizer(Sanitation htmlSanitizer);
-
+	/**
+	 * Sets the timeout for connections when scraping.
+	 * 
+	 * @param timeout The timeout in ms.
+	 */
+	public void setTimeout(int timeout);
 }

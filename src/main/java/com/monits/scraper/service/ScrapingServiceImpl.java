@@ -37,6 +37,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
@@ -56,9 +58,12 @@ import com.monits.scraper.transformation.Transformation;
  * @since 1.0.0
  */
 public class ScrapingServiceImpl implements ScrapingService {
-
+	
+	private static final int DEFAULT_TIMEOUT = 60000;
+	
 	protected Sanitation htmlSanitizer = new SanitationHtmlCleaner();
 	private ClientConnectionManager connManager;
+	private int timeout = DEFAULT_TIMEOUT;
 	
 	/**
 	 * Default constructor.
@@ -119,7 +124,12 @@ public class ScrapingServiceImpl implements ScrapingService {
 
 		DefaultHttpClient client = new DefaultHttpClient(connManager);
 		HttpUriRequest request = null;
-
+		
+		// Set the timeout
+		HttpParams params = client.getParams();
+		HttpConnectionParams.setConnectionTimeout(params, timeout);
+		HttpConnectionParams.setSoTimeout(params, timeout);
+		
 		switch (requestParams.getVerb()) {
 		case GET:
 			request = new HttpGet(requestParams.getUrl());
@@ -226,5 +236,10 @@ public class ScrapingServiceImpl implements ScrapingService {
 	@Override
 	public void setSanitizer (Sanitation sanitizer) {
 		this.htmlSanitizer = sanitizer;
+	}
+
+	@Override
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
 	}
 }
