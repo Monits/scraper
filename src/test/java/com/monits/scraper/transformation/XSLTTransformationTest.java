@@ -29,6 +29,8 @@ import com.monits.scraper.service.ScrapingServiceException;
  */
 public class XSLTTransformationTest {
 	
+	private static final String SCRAP_TEST_XSL = "scrapTest.xsl";
+	
 	private String originalCode;
 	private String transformedCode;
 	private String filePath;
@@ -40,7 +42,7 @@ public class XSLTTransformationTest {
 	@Before
 	public void setUp() throws Exception {
 		//Original file path to a valid XSL.
-		this.filePath = getClass().getClassLoader().getResource("scrapTest.xsl").toString();
+		this.filePath = getClass().getClassLoader().getResource(SCRAP_TEST_XSL).toString();
 	}
 
 	/**
@@ -67,7 +69,6 @@ public class XSLTTransformationTest {
 		transformedCode = trans.transform(originalCode);
 		
 		Assert.assertNotNull("Not null object expected.", transformedCode);
-		
 	}
 	
 	/**
@@ -83,7 +84,25 @@ public class XSLTTransformationTest {
 		trans = new XSLTTransformation(filePath);
 		
 		trans.transform(originalCode);
+	}
+	
+	/**
+	 * Test method for XSLTTransformation.transform but using a claspath file.
+	 * This test should work properly. 
+	 */
+	@Test
+	public void testTransformFromClasspath() throws ScrapingServiceException {
 		
+		//Example code.
+		this.originalCode = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><catalog><cd><title>Empire Burlesque</title><artist>Bob Dylan</artist><country>USA</country>	<company>Columbia</company><price>10.90</price><year>1985</year></cd></catalog>";
+		
+		//Initializing a XSLTTransformation class object.
+		trans = new XSLTTransformation("classpath:" + SCRAP_TEST_XSL);		
+		
+		//Saving the transformed string into transformedCode variable.
+		transformedCode = trans.transform(originalCode);
+		
+		Assert.assertNotNull("Not null object expected.", transformedCode);
 	}
 	
 	/**

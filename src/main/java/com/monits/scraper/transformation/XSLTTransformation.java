@@ -46,6 +46,8 @@ import org.w3c.dom.Document;
  */
 public class XSLTTransformation implements Transformation {
 
+	private static final String CLASSPATH_PREFIX = "classpath:";
+
 	private static final int DEFAULT_INITIAL_BUFFER_SIZE = 10000;
 
 	protected Transformer xslt;
@@ -54,22 +56,21 @@ public class XSLTTransformation implements Transformation {
 	 * Parameterized constructor, it builds the URI of the XSL that will be used
 	 * to transform the retrieved XHTML.
 	 * 
-	 * @param xslt
-	 *            The path to the XSL file.
+	 * @param xslt The path to the XSL file. May start with "classpath:" to reference a file in the current classpath.
 	 */
 	public XSLTTransformation(String xslt) {
 
-		URI xsltUri;
-		try {
-			xsltUri = new URI(xslt);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
-
 		InputStream stream;
 		try {
-			stream = new FileInputStream(new File(xsltUri));
+			// Support the "classpath:" prefix to look in the current classpath
+			if (xslt.startsWith(CLASSPATH_PREFIX)) {
+				stream = getClass().getClassLoader().getResourceAsStream(xslt.substring(CLASSPATH_PREFIX.length()));
+			} else {
+				stream = new FileInputStream(new File(new URI(xslt)));
+			}
 		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
 
