@@ -33,8 +33,8 @@ public interface RequestGenerator {
 	/**
 	 * Add a new header given the key and value.
 	 * 
-	 * @param key
-	 * @param value
+	 * @param key Name of the header to be added.
+	 * @param value The value to be set for the given header.
 	 */
 	public void addHeader(String key, String value);
 
