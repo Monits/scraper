@@ -89,9 +89,14 @@ public class ScrapingServiceImplTest {
 	
 		final Capture<String> xhtmlCapture = new Capture<String>();
 
-		
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Content-Type", "application/x-www-form-urlencoded");
+		headers.put("User-Agent", "Mozilla Firefox 3.2.1.2.3");
+
 		EasyMock.expect(requestFF.getUrl())
 			.andReturn("http://www.gmail.com").anyTimes();
+		EasyMock.expect(requestFF.getHeaders())
+			.andReturn(headers).anyTimes();
 		EasyMock.expect(requestFF.getUserAgent())
 			.andReturn("Mozilla Firefox 3.2.1.2.3").anyTimes();
 		EasyMock.expect(requestFF.getCookies())
@@ -101,6 +106,8 @@ public class ScrapingServiceImplTest {
 		
 		EasyMock.expect(requestMobile.getUrl())
 			.andReturn("http://www.gmail.com").anyTimes();
+		EasyMock.expect(requestMobile.getHeaders())
+			.andReturn(headers).anyTimes();
 		EasyMock.expect(requestMobile.getUserAgent())
 			.andReturn("Mozilla/5.0 (iPhone; U; CPU iPhone " +
 			"OS 4_0 like Mac OS X; en-us").anyTimes();
@@ -158,9 +165,16 @@ public class ScrapingServiceImplTest {
 	
 		Map<String, String> cookie = new HashMap<String, String>();
 		cookie.put("guid", "1F074B19C51E42C5A5175C6F7D");
-		
+
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Content-Type", "application/x-www-form-urlencoded");
+		headers.put("User-Agent", "Mozilla Firefox 3.2.1.2.3");
+
 		EasyMock.expect(requestCookie.getUrl())
 			.andReturn("http://www.cotodigital.com.ar/novedades.asp")
+			.anyTimes();
+		EasyMock.expect(requestCookie.getHeaders())
+			.andReturn(headers)
 			.anyTimes();
 		EasyMock.expect(requestCookie.getUserAgent())
 			.andReturn("Mozilla Firefox 3.2.1.2.3").anyTimes();
@@ -172,6 +186,9 @@ public class ScrapingServiceImplTest {
 		EasyMock.expect(requestWithoutCookie.getUrl())
 			.andReturn("http://www.cotodigital.com.ar/novedades.asp")
 				.anyTimes();
+		EasyMock.expect(requestWithoutCookie.getHeaders())
+			.andReturn(headers)
+			.anyTimes();
 		EasyMock.expect(requestWithoutCookie.getUserAgent())
 			.andReturn("Mozilla Firefox 3.2.1.2.3").anyTimes();
 		EasyMock.expect(requestWithoutCookie.getCookies())

@@ -31,6 +31,21 @@ public interface RequestGenerator {
 	public RequestVerb getVerb();
 
 	/**
+	 * Add a new header given the key and value.
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public void addHeader(String key, String value);
+
+	/**
+	 * Retrieve the request's headers.
+	 * 
+	 * @return map contaning the headers.
+	 */
+	public Map<String, String> getHeaders();
+
+	/**
 	 * Request's URL getter.
 	 *
 	 * @return a String with the url from the generated request.

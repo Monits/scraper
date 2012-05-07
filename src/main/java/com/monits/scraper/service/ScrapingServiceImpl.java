@@ -9,12 +9,17 @@
  */
 package com.monits.scraper.service;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -85,8 +90,15 @@ public class ScrapingServiceImpl implements ScrapingService {
 			schemeRegistry.register(new Scheme("https", 443, ssf));
 			schemeRegistry.register(new Scheme("http", 80, new PlainSocketFactory()));
 			connManager = new ThreadSafeClientConnManager(schemeRegistry);
-		} catch (Exception e) { // NOPMD - ignore this exception
-			// Ignored
+
+		} catch (KeyManagementException e) { // NOPMD - ignore this exception
+			// ignore
+		} catch (UnrecoverableKeyException e) { // NOPMD - ignore this exception
+			// ignore
+		} catch (NoSuchAlgorithmException e) { // NOPMD - ignore this exception
+			// ignore
+		} catch (KeyStoreException e) { // NOPMD - ignore this exception
+			// ignore
 		}
 	}
 
@@ -155,8 +167,8 @@ public class ScrapingServiceImpl implements ScrapingService {
 		if (request instanceof HttpEntityEnclosingRequestBase
 				&& requestParams.getBody() != null) {
 
-			request.setHeader(
-					"Content-Type","application/x-www-form-urlencoded");
+			requestParams.addHeader("Content-Type", "application/x-www-form-urlencoded");
+//			request.setHeader("Content-Type","application/x-www-form-urlencoded");
 
 			UrlEncodedFormEntity bodyEntity = buildBody(requestParams);
 			((HttpEntityEnclosingRequestBase)request).setEntity(bodyEntity);
@@ -168,8 +180,12 @@ public class ScrapingServiceImpl implements ScrapingService {
 			client.setCookieStore(cookieStore);
 		}
 
-		if (requestParams.getUserAgent() != null) {
-			request.setHeader("User-Agent", requestParams.getUserAgent());
+		Map<String, String> headers = requestParams.getHeaders();
+		if (headers != null && !headers.isEmpty()) {
+
+			for (Entry<String, String> entry : headers.entrySet()) {
+				request.setHeader(entry.getKey(), entry.getValue());
+			}
 		}
 
 		return client.execute(request);

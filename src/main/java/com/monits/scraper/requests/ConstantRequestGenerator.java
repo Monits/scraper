@@ -10,6 +10,7 @@
  */
 package com.monits.scraper.requests;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,11 +25,13 @@ import java.util.Map;
  */
 public class ConstantRequestGenerator implements RequestGenerator {
 
+	private static final String USER_AGENT_KEY = "User-Agent";
+
 	private RequestVerb verb;
 	private String url;
-	private String userAgent;
 	private Map<String,String> cookies;
 	private Map<String,String> body;
+	private Map<String, String> headers;
 
 	/**
 	 * HTTP Request constructor.
@@ -64,7 +67,8 @@ public class ConstantRequestGenerator implements RequestGenerator {
 								String userAgent, Map<String,String> cookies) {
 		this.url = url;
 		this.verb = verb;
-		this.userAgent = userAgent;
+		this.headers = new HashMap<String, String>();
+		this.headers.put(USER_AGENT_KEY, userAgent);
 		this.cookies = cookies;
 		this.body = null;
 	}
@@ -98,8 +102,18 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	}
 
 	@Override
+	public void addHeader(String key, String value) {
+		this.headers.put(key, value);
+	}
+
+	@Override
+	public Map<String, String> getHeaders() {
+		return this.headers;
+	}
+
+	@Override
 	public String getUserAgent() {
-		return userAgent;
+		return headers.get(USER_AGENT_KEY);
 	}
 
 	/**
@@ -108,7 +122,7 @@ public class ConstantRequestGenerator implements RequestGenerator {
 	 * @param userAgent sets an UserAgent to the generated request.
 	 */
 	public void setUserAgent(String userAgent) {
-		this.userAgent = userAgent;
+		this.headers.put(USER_AGENT_KEY, userAgent);
 	}
 
 	@Override
