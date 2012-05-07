@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
@@ -136,39 +137,17 @@ public class ScrapingServiceImpl implements ScrapingService {
 		throws Exception {
 
 		DefaultHttpClient client = new DefaultHttpClient(connManager);
-		HttpUriRequest request = null;
+		HttpUriRequest request = getRequestObject(requestParams);
 
 		// Set the timeout
 		HttpParams params = client.getParams();
 		HttpConnectionParams.setConnectionTimeout(params, timeout);
 		HttpConnectionParams.setSoTimeout(params, timeout);
 
-		switch (requestParams.getVerb()) {
-			case GET:
-				request = new HttpGet(requestParams.getUrl());
-				break;
-
-			case POST:
-				request = new HttpPost(requestParams.getUrl());
-				break;
-
-			case DELETE:
-				request = new HttpDelete(requestParams.getUrl());
-				break;
-
-			case PUT:
-				request = new HttpPut(requestParams.getUrl());
-				break;
-
-			default:
-				throw new Exception("No Support for " + requestParams.getVerb() + " HTTP verb");
-		}
-
 		if (request instanceof HttpEntityEnclosingRequestBase
 				&& requestParams.getBody() != null) {
 
-			requestParams.addHeader("Content-Type", "application/x-www-form-urlencoded");
-//			request.setHeader("Content-Type","application/x-www-form-urlencoded");
+			requestParams.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
 
 			UrlEncodedFormEntity bodyEntity = buildBody(requestParams);
 			((HttpEntityEnclosingRequestBase)request).setEntity(bodyEntity);
@@ -181,7 +160,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 		}
 
 		Map<String, String> headers = requestParams.getHeaders();
-		if (headers != null && !headers.isEmpty()) {
+		if (!headers.isEmpty()) {
 
 			for (Entry<String, String> entry : headers.entrySet()) {
 				request.setHeader(entry.getKey(), entry.getValue());
@@ -190,6 +169,34 @@ public class ScrapingServiceImpl implements ScrapingService {
 
 		return client.execute(request);
 
+	}
+
+	/**
+	 * Instances new request for the given params. This instance is being mapped to the given verb, and url.
+	 *
+	 * @param requestParams
+	 *
+	 * @return A HttpUriRequest mapped to the given verb.
+	 *
+	 * @throws Exception
+	 */
+	private HttpUriRequest getRequestObject(RequestGenerator requestParams) throws Exception {
+		switch (requestParams.getVerb()) {
+			case GET:
+				return new HttpGet(requestParams.getUrl());
+
+			case POST:
+				return new HttpPost(requestParams.getUrl());
+
+			case DELETE:
+				return new HttpDelete(requestParams.getUrl());
+
+			case PUT:
+				return new HttpPut(requestParams.getUrl());
+
+			default:
+				throw new Exception("No Support for " + requestParams.getVerb() + " HTTP verb");
+		}
 	}
 
 	/**
