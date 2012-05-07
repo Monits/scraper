@@ -58,13 +58,13 @@ import com.monits.scraper.transformation.Transformation;
  * @since 1.0.0
  */
 public class ScrapingServiceImpl implements ScrapingService {
-	
+
 	private static final int DEFAULT_TIMEOUT = 60000;
-	
+
 	protected Sanitation htmlSanitizer = new SanitationHtmlCleaner();
 	private ClientConnectionManager connManager;
 	private int timeout = DEFAULT_TIMEOUT;
-	
+
 	/**
 	 * Default constructor.
 	 */
@@ -73,7 +73,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 		TrustStrategy ts = new TrustStrategy() {
 			@Override
 			public boolean isTrusted(X509Certificate[] chain, String authType)
-					throws CertificateException {
+				throws CertificateException {
 				// Trust everything
 				return true;
 			}
@@ -85,13 +85,14 @@ public class ScrapingServiceImpl implements ScrapingService {
 			schemeRegistry.register(new Scheme("https", 443, ssf));
 			schemeRegistry.register(new Scheme("http", 80, new PlainSocketFactory()));
 			connManager = new ThreadSafeClientConnManager(schemeRegistry);
-		} catch (Exception e) {
+		} catch (Exception e) { // NOPMD - ignore this exception
+			// Ignored
 		}
 	}
-	
+
 	@Override
-	public String scrap (RequestGenerator rGen,	Transformation transform)
-		   throws ScrapingServiceException {
+	public String scrap(RequestGenerator rGen,	Transformation transform)
+		throws ScrapingServiceException {
 
 		HttpResponse response;
 		String data = null;
@@ -120,47 +121,45 @@ public class ScrapingServiceImpl implements ScrapingService {
 	 * @throws Exception
 	 */
 	private HttpResponse performRequest(RequestGenerator requestParams)
-			throws Exception {
+		throws Exception {
 
 		DefaultHttpClient client = new DefaultHttpClient(connManager);
 		HttpUriRequest request = null;
-		
+
 		// Set the timeout
 		HttpParams params = client.getParams();
 		HttpConnectionParams.setConnectionTimeout(params, timeout);
 		HttpConnectionParams.setSoTimeout(params, timeout);
-		
+
 		switch (requestParams.getVerb()) {
-		case GET:
-			request = new HttpGet(requestParams.getUrl());
-			break;
+			case GET:
+				request = new HttpGet(requestParams.getUrl());
+				break;
 
-		case POST:
-			request = new HttpPost(requestParams.getUrl());
-			break;
+			case POST:
+				request = new HttpPost(requestParams.getUrl());
+				break;
 
-		case DELETE:
-			request = new HttpDelete(requestParams.getUrl());
-			break;
+			case DELETE:
+				request = new HttpDelete(requestParams.getUrl());
+				break;
 
-		case PUT:
-			request = new HttpPut(requestParams.getUrl());
-			break;
+			case PUT:
+				request = new HttpPut(requestParams.getUrl());
+				break;
 
-		default:
-			throw new Exception("No Support for "
-					+ requestParams.getVerb() + " HTTP verb");
+			default:
+				throw new Exception("No Support for " + requestParams.getVerb() + " HTTP verb");
 		}
 
-		if (request instanceof HttpEntityEnclosingRequestBase) {
+		if (request instanceof HttpEntityEnclosingRequestBase
+				&& requestParams.getBody() != null) {
 
-			if (requestParams.getBody() != null) {
-				request.setHeader(
-						"Content-Type","application/x-www-form-urlencoded");
+			request.setHeader(
+					"Content-Type","application/x-www-form-urlencoded");
 
-				UrlEncodedFormEntity bodyEntity = buildBody(requestParams);
-				((HttpEntityEnclosingRequestBase)request).setEntity(bodyEntity);
-			}
+			UrlEncodedFormEntity bodyEntity = buildBody(requestParams);
+			((HttpEntityEnclosingRequestBase)request).setEntity(bodyEntity);
 		}
 
 		if (requestParams.getCookies() != null) {
@@ -172,7 +171,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 		if (requestParams.getUserAgent() != null) {
 			request.setHeader("User-Agent", requestParams.getUserAgent());
 		}
-		
+
 		return client.execute(request);
 
 	}
@@ -189,20 +188,19 @@ public class ScrapingServiceImpl implements ScrapingService {
 		throws Exception {
 
 		Iterator<Map.Entry<String, String>> bodyIterator = null;
-	    List<NameValuePair> bodyValues = new ArrayList<NameValuePair>();
+		List<NameValuePair> bodyValues = new ArrayList<NameValuePair>();
 
-	    Map<String,String> bodyMap = requestParams.getBody();
+		Map<String,String> bodyMap = requestParams.getBody();
 		bodyIterator = bodyMap.entrySet().iterator();
 
 		while (bodyIterator.hasNext()) {
-				Map.Entry<String, String> bodyValuePair = bodyIterator.next();
+			Map.Entry<String, String> bodyValuePair = bodyIterator.next();
 
-		bodyValues.add(new BasicNameValuePair(
-						bodyValuePair.getKey(), bodyValuePair.getValue()));
+			bodyValues.add(new BasicNameValuePair(
+					bodyValuePair.getKey(), bodyValuePair.getValue()));
+		}
 
-	   }
-
-	   return new UrlEncodedFormEntity(bodyValues,HTTP.UTF_8);
+		return new UrlEncodedFormEntity(bodyValues,HTTP.UTF_8);
 
 	}
 
@@ -234,7 +232,7 @@ public class ScrapingServiceImpl implements ScrapingService {
 	}
 
 	@Override
-	public void setSanitizer (Sanitation sanitizer) {
+	public void setSanitizer(Sanitation sanitizer) {
 		this.htmlSanitizer = sanitizer;
 	}
 
