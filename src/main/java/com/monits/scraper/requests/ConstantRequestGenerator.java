@@ -71,7 +71,9 @@ public class ConstantRequestGenerator implements RequestGenerator {
 		this.cookies = cookies;
 		this.body = null;
 
-		setUserAgent(userAgent);
+		if (userAgent != null) {
+			setUserAgent(userAgent);
+		}
 	}
 
 	@Override
