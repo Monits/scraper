@@ -4,7 +4,7 @@
 
   <groupId>com.monits</groupId>
   <artifactId>scraper</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <packaging>jar</packaging>
 
   <name>monits-scraper</name>
