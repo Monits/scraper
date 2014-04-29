@@ -4,7 +4,7 @@
 
   <groupId>com.monits</groupId>
   <artifactId>scraper</artifactId>
-  <version>1.2</version>
+  <version>1.2.1</version>
   <packaging>jar</packaging>
 
   <name>monits-scraper</name>
@@ -35,7 +35,7 @@
     <junit.version>4.8.1</junit.version>
     <easymock.version>3.0</easymock.version>
     <easymock.classextension.version>3.0</easymock.classextension.version>
-    <apache.httpclient.version>4.3.1</apache.httpclient.version>
+    <apache.httpclient.version>4.3.3</apache.httpclient.version>
     <htmlcleaner.version>2.2</htmlcleaner.version>
   </properties>
 
